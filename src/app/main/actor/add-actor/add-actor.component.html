@@ -1,0 +1,91 @@
+<div class="page-layout blank" fusePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start center" fxLayout.gt-md="row">
+    <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start"  fxFlex="100" 
+    fxFlex="1 0 auto" name="form" >
+        <div class="h2 mb-24" style="text-align: center">Add New</div>
+  
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                    <mat-label>Name</mat-label>     
+                    <input matInput placeholder="Name" >
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                    <mat-label>Qualification</mat-label>     
+                    <input matInput placeholder="Qualification" >
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                    <mat-label>Speciality</mat-label>     
+                    <mat-select placeholder='Speciality'>
+                        <mat-option>1</mat-option>
+                        <mat-option>1</mat-option>
+                        <mat-option>1</mat-option>
+                        <mat-option>1</mat-option>
+                    </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                        <mat-label>Experience(in years)</mat-label>     
+                        <input matInput type="number" min="0" placeholder="Experience" >
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                        <mat-label>Language</mat-label>     
+                        <mat-select placeholder='Language'>
+                                <mat-option value='Telugu'>Telugu</mat-option>
+                                <mat-option value='English'>English</mat-option>
+                                <mat-option value='Hindi'>Hindi</mat-option>
+                                <mat-option value='Other'>Other</mat-option>
+                            </mat-select>
+                </mat-form-field>
+        </div>
+        <div fxLayout="row" class="mb-24" fxLayoutAlign="start center" fxFlex="1 0 auto">
+        <div fxLayout='column' fxFlex="100" class="pr-12" >
+                <mat-label>Upload Photo</mat-label>
+                <input  type="file" fxFlex="100" accept="image/jpeg" >
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-label class="h2 pr-12" fxFlex="100" style="width: 33%">Availabilty</mat-label>
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                    <mat-label>Availabile Days</mat-label>     
+                    <mat-select placeholder='Availabile Days' name='days' [(ngModel)]='availableDays'>
+                            <mat-option value='Sunday'>Sunday</mat-option>
+                            <mat-option value='Monday'>Monday</mat-option>
+                            <mat-option value='Tuesday'>Tuesday</mat-option>
+                            <mat-option value='Wednesday'>Wednesday</mat-option>
+                            <mat-option value='Thursday'>Thursday</mat-option>
+                            <mat-option value='Friday'>Friday</mat-option>
+                            <mat-option value='Saturday'>Saturday</mat-option>  
+                        </mat-select>
+            </mat-form-field> 
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                    <mat-label>Availabile Slots</mat-label>     
+                    <mat-select placeholder='Availabile Days' name='slots' [(ngModel)]='availableSlots' multiple=true>
+                            <mat-option value='Slot-1'>Slot-1</mat-option>  
+                            <mat-option value='Slot-2'>Slot-2</mat-option>  
+                            <mat-option value='Slot-3'>Slot-3</mat-option>  
+                            <mat-option value='Slot-4'>Slot-4</mat-option>  
+                            <mat-option value='Slot-5'>Slot-5</mat-option>  
+                            <mat-option value='Slot-6'>Slot-6</mat-option>  
+                            <mat-option value='Slot-7'>Slot-7</mat-option>  
+                            <mat-option value='Slot-8'>Slot-8</mat-option>  
+                            <mat-option value='Slot-9'>Slot-9</mat-option>  
+                            <mat-option value='Slot-10'>Slot-10</mat-option>  
+                            <mat-option value='Slot-11'>Slot-11</mat-option>  
+                            <mat-option value='Slot-12'>Slot-12</mat-option>  
+                            <mat-option value='Slot-13'>Slot-13</mat-option>  
+                            <mat-option value='Slot-14'>Slot-14</mat-option>  
+                            <mat-option value='Slot-15'>Slot-15</mat-option>  
+                            <mat-option value='Slot-16'>Slot-16</mat-option>  
+                        </mat-select>
+            </mat-form-field> 
+            
+            <button mat-raised-button color="primary" type="button" (click)='availability($event)'>Add</button>
+
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto">
+                <button mat-raised-button color="primary" type="button" (click)='availability($event)'>Submit</button>
+        </div>
+    </form>
+    </div>
+</div>
