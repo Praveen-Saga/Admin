@@ -22,8 +22,17 @@
                         <mat-option>1</mat-option>
                     </mat-select>
             </mat-form-field>
+            
         </div>
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                        <mat-label>Gender</mat-label>     
+                        <mat-select placeholder='Gender'>
+                                <mat-option value='Male'>Male</mat-option>
+                                <mat-option value='Female'>Female</mat-option>
+                                <mat-option value='Other'>Other</mat-option>
+                        </mat-select>
+                </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                         <mat-label>Experience(in years)</mat-label>     
                         <input matInput type="number" min="0" placeholder="Experience" >
@@ -38,14 +47,24 @@
                             </mat-select>
                 </mat-form-field>
         </div>
-        <div fxLayout="row" class="mb-24" fxLayoutAlign="start center" fxFlex="1 0 auto">
+        <div fxLayout="row" class="mb-12" fxLayoutAlign="start center" fxFlex="1 0 auto">
         <div fxLayout='column' fxFlex="100" class="pr-12" >
                 <mat-label>Upload Photo</mat-label>
                 <input  type="file" fxFlex="100" accept="image/jpeg" >
             </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-            <mat-label class="h2 pr-12" fxFlex="100" style="width: 33%">Availabilty</mat-label>
+                        <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                                <mat-label>Phone</mat-label>
+                                <input matInput type="tel"  placeholder="Phone" />
+                        </mat-form-field>  
+                        <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                                        <mat-label>Email</mat-label>
+                                <input matInput type="email"  placeholder="Email" />
+                        </mat-form-field>   
+                </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <div class="h2 pr-12 mb-12" fxFlex="100" style="width: 33%">Availabilty</div>
             <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                     <mat-label>Availabile Days</mat-label>     
                     <mat-select placeholder='Availabile Days' name='days' [(ngModel)]='availableDays'>
@@ -56,6 +75,8 @@
                             <mat-option value='Thursday'>Thursday</mat-option>
                             <mat-option value='Friday'>Friday</mat-option>
                             <mat-option value='Saturday'>Saturday</mat-option>  
+                            <mat-option value='Monday to Saturday'>Monday to Saturday</mat-option>  
+                            <mat-option value='Everyday'>Everyday</mat-option>  
                         </mat-select>
             </mat-form-field> 
             <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
@@ -83,8 +104,25 @@
             <button mat-raised-button color="primary" type="button" (click)='availability($event)'>Add</button>
 
         </div>
-        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto">
-                <button mat-raised-button color="primary" type="button" (click)='availability($event)'>Submit</button>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <div class="h2 pr-30 mb-12" style="width:33%">Location</div>     
+
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                        <input matInput type="number"  placeholder="Latitude" />
+                </mat-form-field>  
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                        <input matInput type="number"  placeholder="Longitude" />
+                </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                        <mat-label>Clinic Address</mat-label>     
+                        <textarea matInput placeholder="Clinic Address" ></textarea> 
+                </mat-form-field>
+        </div>
+        <div class='px-24' fxLayoutAlign="center center" style="margin:auto;text-align: center  ">
+                <button mat-raised-button color="accent" type="button" style="width:200px;margin:auto;">Submit</button>
         </div>
     </form>
     </div>

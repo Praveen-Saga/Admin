@@ -5,15 +5,19 @@ import { ViewActorComponent } from './view-actor/view-actor.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule, MatTableModule, MatIconModule, MatPaginatorModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
+import { CreateActorComponent } from './create-actor/create-actor.component';
 
 
 const Material=[
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTableModule,
+    MatIconModule,
+    MatPaginatorModule
 ]
 
 const routes = [
@@ -21,7 +25,12 @@ const routes = [
         path     : '',
         children:[
             {
-                path: 'add/:newactor',
+                path:'create-actor',
+                component:CreateActorComponent
+            },
+            {
+
+                path : 'add/:newactor',
                 component: AddActorComponent
             },
             {
@@ -37,7 +46,9 @@ const routes = [
       
     AddActorComponent,
       
-    ViewActorComponent],
+    ViewActorComponent,
+      
+    CreateActorComponent],
     imports     : [
         RouterModule.forChild(routes),
         FormsModule,

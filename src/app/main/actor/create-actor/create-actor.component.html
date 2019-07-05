@@ -1,0 +1,15 @@
+<div class="page-layout blank" fusePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start center" fxLayout.gt-md="row">
+        <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start"  fxFlex="100" 
+        fxFlex="1 0 auto" name="form" >
+            <div class="h2 mb-24" style="text-align: center">Create New Actor</div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                        <mat-label>Master Name</mat-label>     
+                        <input matInput placeholder="Master Name" name="new master" [(ngModel)]='Master'>
+                </mat-form-field>
+                <button mat-raised-button color="accent" (click)='submit()' style="width:200px;margin:auto;">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
