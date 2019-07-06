@@ -15,13 +15,22 @@ const routes: Routes = [
     }
     ],
   },
+  // { 
+  //   path: 'dashboard', 
+  //   loadChildren: './main/dashboard/dashboard.module#DashBoardModule' 
+  // },
   { 
     path: 'dashboard', 
-    loadChildren: './main/dashboard/dashboard.module#DashBoardModule' 
+    loadChildren: './main/scrumboard/scrumboard.module#ScrumboardModule' 
   },
+
   { 
     path: 'actor', 
     loadChildren: './main/actor/actor.module#ActorModule' 
+  },
+  { 
+    path: 'push-notifications', 
+    loadChildren: './main/push-notifications/push-notifications.module#PushNotificationsModule' 
   },
   {
     path:'**',

@@ -8,6 +8,9 @@ import {MatSelectModule} from '@angular/material/select';
 import { MatButtonModule, MatTableModule, MatIconModule, MatPaginatorModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { CreateActorComponent } from './create-actor/create-actor.component';
+import { CreateSlotComponent } from './create-slot/create-slot.component';
+import { CommonModule } from '@angular/common';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 
 const Material=[
@@ -29,6 +32,10 @@ const routes = [
                 component:CreateActorComponent
             },
             {
+                path:'create-slot',
+                component:CreateSlotComponent
+            },
+            {
 
                 path : 'add/:newactor',
                 component: AddActorComponent
@@ -48,11 +55,16 @@ const routes = [
       
     ViewActorComponent,
       
-    CreateActorComponent],
+    CreateActorComponent,
+      
+    CreateSlotComponent],
     imports     : [
+        CommonModule,
         RouterModule.forChild(routes),
+        NgxMaterialTimepickerModule,
+
         FormsModule,
-        Material
+        Material,
     ],
     exports:[
        

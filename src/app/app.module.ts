@@ -19,6 +19,8 @@ import { SampleModule } from 'app/main/sample/sample.module';
 import { LoginModule } from './main/login/login.module';
 import { AppRoutingModule } from './app-routing.module';
 import { ActorModule } from './main/actor/actor.module';
+import { CommonModule } from '@angular/common';
+import { ScrumboardModule } from './main/scrumboard/scrumboard.module';
 
 // const appRoutes: Routes = [
 //     {
@@ -34,6 +36,7 @@ import { ActorModule } from './main/actor/actor.module';
     ],
     imports     : [
         BrowserModule,
+        CommonModule,
         BrowserAnimationsModule,
         HttpClientModule,
         AppRoutingModule,
@@ -55,7 +58,7 @@ import { ActorModule } from './main/actor/actor.module';
         FuseSharedModule,
         FuseSidebarModule,
         FuseThemeOptionsModule,
-
+        // ScrumboardModule,
         // App modules
         LayoutModule,
         SampleModule,

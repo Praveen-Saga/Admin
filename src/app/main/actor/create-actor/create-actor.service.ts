@@ -13,50 +13,7 @@ export class CreateActorService {
   getRole:Observable<FuseNavigation[]>;
   private roleSubject =new Subject<FuseNavigation[]>();
   roleData:FuseNavigation;
-  roleDataArr:FuseNavigation[]=[
-    {
-        id       : 'project',
-        title    : 'PROJECT',
-        // translate: 'NAV.APPLICATIONS',
-        type     : 'group',
-        children : [
-            {
-                id       : 'dashboard',
-                title    : 'DashBoard',
-                // translate: 'NAV.SAMPLE.TITLE',
-                type     : 'item',
-                icon     : 'assessment',
-                url      : '/dashboard',
-                // badge    : {
-                //     title    : '25',
-                //     translate: 'NAV.SAMPLE.BADGE',
-                //     bg       : '#F44336',
-                //     fg       : '#FFFFFF'
-                // }
-            },
-            {
-                id:'doctor',
-                title:'Doctor',
-                type:'collapsable',
-                icon: '',
-                children:[
-                    {
-                        id:'add',
-                        title:'Add New',
-                        type:'item',
-                        url:'/actor/add/doctor'
-                    },
-                    {
-                        id:'view',
-                        title:'View Existing',
-                        type:'item',
-                        url:'/actor/view/doctor'
-                    },
-                ]
-            }
-        ]
-    }
-];
+  rolesArr:string[]=['doctor','nurse','medical-store','transport'];
   dupCheck={};
   constructor(
     private fuseNavServ:FuseNavigationService,
@@ -69,9 +26,10 @@ export class CreateActorService {
     return this.getRole=this.roleSubject.asObservable()
   }
 
-  createNewActor(role){
+  createNewActor(role:string){
     const myrole=role.toLowerCase();
-    this.dupCheck=navigation[0].children.find(el=>{
+    const myTitle=role[0].toUpperCase()+role.slice(1).toLowerCase();
+    this.dupCheck=navigation[1].children.find(el=>{
       console.log(el.id);
      return el.id == myrole;
     });
@@ -79,27 +37,28 @@ export class CreateActorService {
     if(this.dupCheck==null){
       this.roleData= {
         id:myrole,
-        title:role,
+        title:myTitle,
         type:'collapsable',
         icon: '',
         children:[
             {
                 id:'add',
-                title:'Add New ' + role,
+                title:'Add New ' + myTitle,
                 type:'item',
                 url:'/actor/add/'+myrole
             },
             {
                 id:'view',
-                title:'View Existing '+role+"s",
+                title:'View Existing '+myTitle+"s",
                 type:'item',
                 url:'/actor/view/'+myrole
             },
         ]
     }
     console.log(navigation);
-    this.fuseNavServ.updateNavigationItem('project',navigation[0].children.push(this.roleData));
+    this.fuseNavServ.updateNavigationItem('project',navigation[1].children.push(this.roleData));
     this.dupCheck={};
+    this.router.navigateByUrl('/actor/add/'+myrole)
     }
     else{
       alert(role+' Already Exists');

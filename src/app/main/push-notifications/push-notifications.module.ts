@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
-import { DashboardComponent } from './dashboard.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { PushNotificationsComponent } from './push-notifications.component';
 
 const routes = [
     {
         path     : '',
-        component:DashboardComponent
+        component:PushNotificationsComponent
         
     },  
 ];
 
 @NgModule({
     declarations: [
-        DashboardComponent,
+        PushNotificationsComponent,
       
     ],
     imports     : [
@@ -21,11 +21,11 @@ const routes = [
         FormsModule,
     ],
     exports:[
-        DashboardComponent,
+        PushNotificationsComponent,
        
     ]
    
 })
-export class DashBoardModule
+export class PushNotificationsModule
 {
 }
