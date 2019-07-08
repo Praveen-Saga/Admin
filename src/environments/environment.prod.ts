@@ -1,4 +1,5 @@
 export const environment = {
     production: true,
-    hmr       : false
+    hmr       : false,
+    url: 'http://192.168.169.25:3000/'
 };

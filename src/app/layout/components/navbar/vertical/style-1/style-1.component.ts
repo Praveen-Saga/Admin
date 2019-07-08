@@ -79,11 +79,11 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
 
                         if ( activeNavItem )
                         {
-                            const activeItemOffsetTop       = activeNavItem.offsetTop,
-                                  activeItemOffsetParentTop = activeNavItem.offsetParent.offsetTop,
-                                  scrollDistance            = activeItemOffsetTop - activeItemOffsetParentTop - (48 * 3) - 168;
+                            const activeItemOffsetTop       = activeNavItem.offsetTop//,
+                                //   activeItemOffsetParentTop = activeNavItem.offsetParent.offsetTop,
+                                //   scrollDistance            = activeItemOffsetTop - activeItemOffsetParentTop - (48 * 3) - 168;
 
-                            this._fusePerfectScrollbar.scrollToTop(scrollDistance);
+                            // this._fusePerfectScrollbar.scrollToTop(scrollDistance);
                         }
                     });
                 }

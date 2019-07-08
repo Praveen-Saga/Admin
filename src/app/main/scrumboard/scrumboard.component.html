@@ -11,6 +11,10 @@
          [@animateStagger]="{value:'50'}">
 
         <!-- BOARD -->
+        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 1 auto" style="width:100%" class="h1 mb-12">Health Providers Details</div>
+
+
+        <!-- <div  fxLayoutAlign="center center" fxFlex="1 0 auto"> -->
         <div class="board-list-item" *ngFor="let board of userBoards"
         [routerLink]="board.children[1].url"
         fxLayout="column" fxLayoutAlign="center center"
@@ -19,7 +23,12 @@
        <mat-label style="font-size: 3.5em">22</mat-label>
        <div class="board-name">{{board.title}}</div>
         </div>
+        <!-- </div> -->
 
+
+        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 1 auto" style="width:100%" class="h1 mb-12">Project Details</div>
+
+        <!-- <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto"> -->
         <div class="board-list-item" *ngFor="let board of projectBoards"
              [routerLink]="board.url"
              fxLayout="column" fxLayoutAlign="center center"
@@ -27,7 +36,19 @@
             <mat-icon class="s-56">{{board.icon}}</mat-icon>
             <div class="board-name">{{board.title}}</div>
         </div>
+        <!-- </div> -->
         
+        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 1 auto" style='width: 100%;' class="h1 mb-12">Alerts</div>
+
+        <!-- <div  fxLayoutAlign="center center" fxFlex="1 0 auto"> -->
+        <div class="board-list-item" *ngFor="let board of alertBoards"
+        [routerLink]="board.url"
+        fxLayout="column" fxLayoutAlign="center center"
+        [@animate]="{value:'*',params:{y:'100%'}}">
+       <mat-icon class="s-56">{{board.icon}}</mat-icon>
+       <div class="board-name">{{board.title}}</div>
+   </div>
+   <!-- </div> -->
         <!-- / BOARD -->
 
         <!-- NEW BOARD BUTTON -->

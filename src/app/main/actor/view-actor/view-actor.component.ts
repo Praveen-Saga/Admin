@@ -3,14 +3,13 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { navigation } from 'app/navigation/navigation';
+import { PeriodicElement } from '../actor.model';
+import { MatDialog } from '@angular/material';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
+import { ViewDialogComponent } from './view-dialog/view-dialog.component';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  AvailableTime: string;
-  AvailableDays: string;
-  Speciality: string;
-}
+
 
 const ELEMENT_DATA: PeriodicElement[] = [
   {position: 1, name: 'Bhavani Shankar', AvailableTime:'' ,AvailableDays:'', Speciality: 'Orthopedic'},
@@ -26,7 +25,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./view-actor.component.scss']
 })
 export class ViewActorComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'name',  'Speciality','Available time','Available Days','edit','delete'];
+  displayedColumns: string[] = ['position', 'name',  'Speciality','Available time','Available Days','view','edit','delete'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   loadedActor: string;
   title: string;
@@ -34,7 +33,8 @@ export class ViewActorComponent implements OnInit {
 
   constructor(
     private activatedRoute:ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) { }
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -62,5 +62,42 @@ export class ViewActorComponent implements OnInit {
  
      })
   }
+
+  delete(){
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      width: '250px',
+      // data: 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed',result);
+      // this.animal = result;
+    });
+  }
+
+  edit(element){
+    const dialogRef = this.dialog.open(EditDialogComponent, {
+      width: '250px',
+      // data: 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed',result);
+      // this.animal = result;
+    });
+  }
+
+  view(element){
+    const dialogRef = this.dialog.open(ViewDialogComponent, {
+      width: '250px',
+      // data: 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed',result);
+      // this.animal = result;
+    });
+  }
+  // }
 
 }

@@ -11,6 +11,10 @@ import { CreateActorComponent } from './create-actor/create-actor.component';
 import { CreateSlotComponent } from './create-slot/create-slot.component';
 import { CommonModule } from '@angular/common';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {MatDialogModule} from '@angular/material/dialog';
+import { ViewDialogComponent } from './view-actor/view-dialog/view-dialog.component';
+import { EditDialogComponent } from './view-actor/edit-dialog/edit-dialog.component';
+import { DeleteDialogComponent } from './view-actor/delete-dialog/delete-dialog.component';
 
 
 const Material=[
@@ -20,7 +24,8 @@ const Material=[
     MatButtonModule,
     MatTableModule,
     MatIconModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule
 ]
 
 const routes = [
@@ -50,14 +55,14 @@ const routes = [
 
 @NgModule({
     declarations: [
-      
     AddActorComponent,
-      
     ViewActorComponent,
-      
     CreateActorComponent,
-      
-    CreateSlotComponent],
+    CreateSlotComponent,
+    ViewDialogComponent,
+    EditDialogComponent, 
+    DeleteDialogComponent
+],
     imports     : [
         CommonModule,
         RouterModule.forChild(routes),
@@ -68,6 +73,11 @@ const routes = [
     ],
     exports:[
        
+    ],
+    entryComponents:[
+        ViewDialogComponent,
+        EditDialogComponent, 
+        DeleteDialogComponent
     ]
    
 })

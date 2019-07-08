@@ -1,4 +1,6 @@
 import { FuseNavigation } from '@fuse/types';
+import { OnInit } from '@angular/core';
+import { ActorService } from 'app/main/actor/actor.service';
 
 export const navigation: FuseNavigation[] = [
     {
@@ -12,7 +14,7 @@ export const navigation: FuseNavigation[] = [
                 title    : 'DashBoard',
                 // translate: 'NAV.SAMPLE.TITLE',
                 type     : 'item',
-                icon     : 'assessment',
+                icon     : 'dashboard',
                 url      : '/dashboard',
                 // badge    : {
                 //     title    : '25',
@@ -22,8 +24,8 @@ export const navigation: FuseNavigation[] = [
                 // }
             },
            {
-                id       : 'create-user',
-                title    : 'Create User',
+                id       : 'create-health-provider',
+                title    : 'Create Health Provider',
                 type     : 'item',
                 icon     : 'add',
                 url      : '/actor/create-actor',
@@ -37,19 +39,12 @@ export const navigation: FuseNavigation[] = [
                 url      : '/actor/create-slot',
                
             },
-            {
-                id       : 'push-notifications',
-                title    : 'Push Notifications',
-                type     : 'item',
-                icon     : 'notification_important',
-                url      : '/push-notifications',
-               
-            },
+          
         ],
     },
     {
-        id       : 'users',
-        title    : 'USERS',
+        id       : 'health-providers',
+        title    : 'HEALTH PROVIDERS',
         // translate: 'NAV.APPLICATIONS',
         type     : 'group',
         children : [
@@ -135,5 +130,50 @@ export const navigation: FuseNavigation[] = [
             },
             
         ]
+    },
+    {
+        id       : 'alerts',
+        title    : 'ALERTS',
+        type     : 'group',
+        children : [
+            {
+                id       : 'reports',
+                title    : 'Reports',
+                type     : 'item',
+                icon     : 'assignment',
+                url      : '/reports',
+             },
+            {
+                id       : 'banners',
+                title    : 'Banners',
+                type     : 'item',
+                icon     : 'photo',
+                url      : '/banner',
+             },
+            {
+                id       : 'push-notifications',
+                title    : 'Push Notifications',
+                type     : 'item',
+                icon     : 'notification_important',
+                url      : '/push-notifications',
+             },
+        ]
     }
 ];
+
+export class SideBarNavigation implements OnInit{
+
+    constructor(private actorServ:ActorService){
+
+    }
+
+    ngOnInit(){
+        this.actorServ.getAllProviders().subscribe((res)=>{
+            console.log(res);
+            res.forEach(element => {
+            //  let myTitle= element.providerName[0].toUpperCase()+element.providerName.slice(1).toLowerCase();
+            });
+            
+          });
+    }
+}

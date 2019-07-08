@@ -29,6 +29,14 @@ const routes: Routes = [
     loadChildren: './main/actor/actor.module#ActorModule' 
   },
   { 
+    path: 'reports', 
+    loadChildren: './main/reports/reports.module#ReportsModule' 
+  },
+  { 
+    path: 'banner', 
+    loadChildren: './main/banner/banners.module#BannersModule' 
+  },
+  { 
     path: 'push-notifications', 
     loadChildren: './main/push-notifications/push-notifications.module#PushNotificationsModule' 
   },

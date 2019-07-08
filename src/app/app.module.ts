@@ -21,6 +21,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ActorModule } from './main/actor/actor.module';
 import { CommonModule } from '@angular/common';
 import { ScrumboardModule } from './main/scrumboard/scrumboard.module';
+import { ReportsModule } from './main/reports/reports.module';
 
 // const appRoutes: Routes = [
 //     {
@@ -40,7 +41,6 @@ import { ScrumboardModule } from './main/scrumboard/scrumboard.module';
         BrowserAnimationsModule,
         HttpClientModule,
         AppRoutingModule,
-        ActorModule,
 
 
         TranslateModule.forRoot(),

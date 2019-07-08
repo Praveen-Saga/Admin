@@ -14,6 +14,8 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { navigation } from 'app/navigation/navigation';
 import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
+import { ActorService } from './main/actor/actor.service';
+import { FuseNavigation } from '@fuse/types';
 
 @Component({
     selector   : 'app',
@@ -24,6 +26,7 @@ export class AppComponent implements OnInit, OnDestroy
 {
     fuseConfig: any;
     navigation: any;
+    roleData:FuseNavigation;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -48,7 +51,8 @@ export class AppComponent implements OnInit, OnDestroy
         private _fuseSplashScreenService: FuseSplashScreenService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
-        private _platform: Platform
+        private _platform: Platform,
+        private actorServ:ActorService
     )
     {
         // Get default navigation
@@ -153,8 +157,44 @@ export class AppComponent implements OnInit, OnDestroy
                 }
 
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
-            });
+           });
+          
+           this.actorServ.getAllProviders().subscribe(res=>{
+            console.log(res);
+            res.forEach(el=>{
+              let myTitle=el.providerName.toLowerCase().replace("-"," ")
+              .split(' ')
+              .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+              .join(' ');
+              this._fuseNavigationService.updateNavigationItem('health-providers',
+              navigation[1].children.push({
+                id:el.providerName,
+                title:myTitle,
+                type:'collapsable',
+                icon: '',
+                children:[
+                    {
+                        id:'add',
+                        title:'Add New '+myTitle,
+                        type:'item',
+                        url:'/actor/add/'+el.providerName
+                    },
+                    {
+                        id:'view',
+                        title:'View Registered '+myTitle,
+                        type:'item',
+                        url:'/actor/view/'+el.providerName
+                    },
+                ]
+            },
+            ))
+            })
+          },
+          err=>{
+              console.log(err);
+          })
     }
+ 
 
     /**
      * On destroy

@@ -6,12 +6,14 @@
             <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                         <mat-label>From</mat-label>
-                        <input matInput [ngxTimepicker]="fromPicker">
+                        <input matInput [ngxTimepicker]="fromPicker" name="fromTime" [format]=24 min="07:00" 
+                        max="22:00" [(ngModel)]='fromTime'>
                         <ngx-material-timepicker #fromPicker></ngx-material-timepicker>
                 </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                     <mat-label>To</mat-label>
-                    <input matInput [ngxTimepicker]="toPicker">
+                    <input matInput [ngxTimepicker]="toPicker" name="toTime" [format]=24 min="08:00" 
+                    max="23:00" [(ngModel)]='toTime' [disabled]='true'>
                     <ngx-material-timepicker #toPicker></ngx-material-timepicker>
             </mat-form-field>
                 <button mat-raised-button color="accent" (click)='submit()' style="width:200px;margin:auto;">Submit</button>
