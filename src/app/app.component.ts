@@ -2,8 +2,8 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Platform } from '@angular/cdk/platform';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, interval } from 'rxjs';
+import { takeUntil, retryWhen } from 'rxjs/operators';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
@@ -159,7 +159,9 @@ export class AppComponent implements OnInit, OnDestroy
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
            });
           
-           this.actorServ.getAllProviders().subscribe(res=>{
+           this.actorServ.getAllProviders().pipe(retryWhen(_ => {
+            return interval(5000)
+          })).subscribe(res=>{
             console.log(res);
             res.forEach(el=>{
               let myTitle=el.providerName.toLowerCase().replace("-"," ")
@@ -181,7 +183,7 @@ export class AppComponent implements OnInit, OnDestroy
                     },
                     {
                         id:'view',
-                        title:'View Registered '+myTitle,
+                        title:'View Registered '+myTitle+'s',
                         type:'item',
                         url:'/actor/view/'+el.providerName
                     },

@@ -7,28 +7,30 @@
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
             <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                     <mat-label>Name</mat-label>     
-                    <input matInput placeholder="Name" >
+                    <input matInput placeholder="Name" name="name" [(ngModel)]='addActor.name' required>
+                    <mat-error>Name is Required!</mat-error>
             </mat-form-field>
+
             <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                     <mat-label>Qualification</mat-label>     
-                    <input matInput placeholder="Qualification" >
+                    <input matInput placeholder="Qualification" name="qualification" [(ngModel)]='addActor.qualification'>
             </mat-form-field>
             <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%" *ngIf='loadedActor=="doctor"'>
                     <mat-label>Speciality</mat-label>     
-                    <mat-select placeholder='Speciality'>
-                        <mat-option>1</mat-option>
-                        <mat-option>1</mat-option>
-                        <mat-option>1</mat-option>
-                        <mat-option>1</mat-option>
+                    <mat-select placeholder='Speciality' name="speciality" [(ngModel)]='addActor.speciality'>
+                        <mat-option value="Cardiology">1</mat-option>
+                        <mat-option value='Opthomology'>1</mat-option>
+                        <mat-option value='Dentalology'>1</mat-option>
+                        <mat-option value='Dermatology'>1</mat-option>
                     </mat-select>
             </mat-form-field>
             
         </div>
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                  <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%"
-                 *ngIf='loadedActor=="doctor" || loadedActor=="nurse"'>
+                 *ngIf='loadedActor=="doctor" || loadedActor=="nurse"' >
                         <mat-label>Gender</mat-label>     
-                        <mat-select placeholder='Gender'>
+                        <mat-select placeholder='Gender' name="gender" [(ngModel)]='addActor.gender'>
                                 <mat-option value='Male'>Male</mat-option>
                                 <mat-option value='Female'>Female</mat-option>
                                 <mat-option value='Other'>Other</mat-option>
@@ -36,12 +38,12 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                         <mat-label>Experience(in years)</mat-label>     
-                        <input matInput type="number" min="0" placeholder="Experience" >
+                        <input matInput type="number" min="0" placeholder="Experience" name="Experience" [(ngModel)]='addActor.experience'>
                 </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%"
                 *ngIf='loadedActor=="doctor" || loadedActor=="nurse"'>
                         <mat-label>Language</mat-label>     
-                        <mat-select placeholder='Language'>
+                        <mat-select placeholder='Language' name="language" [(ngModel)]='addActor.language'>
                                 <mat-option value='Telugu'>Telugu</mat-option>
                                 <mat-option value='English'>English</mat-option>
                                 <mat-option value='Hindi'>Hindi</mat-option>
@@ -52,17 +54,20 @@
         <div fxLayout="row" class="mb-12" fxLayoutAlign="start center" fxFlex="1 0 auto">
         <div fxLayout='column' fxFlex="100" class="pr-12" >
                 <mat-label>Upload Photo</mat-label>
-                <input  type="file" fxFlex="100" accept="image/jpeg, image/png" >
+                <input  type="file" fxFlex="100" accept="image/jpeg, image/png" (change)='imagePicked($event)'>
             </div>
+        </div>
+        <div fxLayout='column' fxFlex="100" class="pr-12 image-preview" *ngIf='imagePreview!=="" && imagePreview'>
+        <img [src]='imagePreview'>
         </div>
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                         <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                                 <mat-label>Phone</mat-label>
-                                <input matInput type="tel"  placeholder="Phone" />
+                                <input matInput type="tel"  placeholder="Phone" name="phone" [(ngModel)]='addActor.phone'/>
                         </mat-form-field>  
                         <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                                         <mat-label>Email</mat-label>
-                                <input matInput type="email"  placeholder="Email" />
+                                <input matInput type="email"  placeholder="Email" name="email" [(ngModel)]='addActor.email'/>
                         </mat-form-field>   
                 </div>
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
@@ -107,13 +112,13 @@
 
         </div>
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mb-12"
-        *ngIf="!availabilityArr.length==0">
+        *ngIf="!addActor.slots.length==0">
                 <table fxFlex="100" class="pr-12" style="width: 66%;text-align: center">
                         <thead>
                                 <th>Days</th>
                                 <th>Slots</th>
                         </thead>
-                        <tbody *ngFor='let dates of availabilityArr' text-center>
+                        <tbody *ngFor='let dates of addActor.slots' text-center>
                                 <td style="width:50%;">{{dates.availableDays}}</td>
                                 <td style="width:50%;">
                                         <ul>
@@ -128,21 +133,21 @@
                 <div class="h2 pr-30 mb-12" style="width:33%">Location</div>     
 
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
-                        <input matInput type="number"  placeholder="Latitude"  name="latitude" [(ngModel)]='latitude'/>
+                        <input matInput type="number"  placeholder="Latitude"  name="latitude" [(ngModel)]='addActor.latitude'/>
                 </mat-form-field>  
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
-                        <input matInput type="number"  placeholder="Longitude" name="longitude" [(ngModel)]='longitude' />
+                        <input matInput type="number"  placeholder="Longitude" name="longitude" [(ngModel)]='addActor.longitude' />
                 </mat-form-field>
         </div>
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                         <mat-label *ngIf='loadedActor=="doctor" || loadedActor=="nurse"'>Hospital/Clinic Address</mat-label> 
                         <mat-label *ngIf='loadedActor!=="doctor" && loadedActor!=="nurse"'>Address</mat-label> 
-                        <textarea matInput placeholder="Address" ></textarea> 
+                        <textarea matInput placeholder="Address" name="address" [(ngModel)]='addActor.address'></textarea> 
                 </mat-form-field>
         </div>
         <div class='px-24' fxLayoutAlign="center center" style="margin:auto;text-align: center  ">
-                <button mat-raised-button color="accent" type="button" style="width:200px;margin:auto;">Submit</button>
+                <button mat-raised-button color="accent" style="width:200px;margin:auto;" (click)='submit()'>Submit</button>
         </div>
     </form>
     </div>

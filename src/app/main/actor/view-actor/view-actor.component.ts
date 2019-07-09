@@ -3,11 +3,12 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { navigation } from 'app/navigation/navigation';
-import { PeriodicElement } from '../actor.model';
+import { PeriodicElement, HealthProvider, AddProvider } from '../actor.model';
 import { MatDialog } from '@angular/material';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 import { ViewDialogComponent } from './view-dialog/view-dialog.component';
+import { ActorService } from '../actor.service';
 
 
 
@@ -25,22 +26,23 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./view-actor.component.scss']
 })
 export class ViewActorComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'name',  'Speciality','Available time','Available Days','view','edit','delete'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  displayedColumns: string[] = [ 'name',  'email','phone','experience','view','edit','delete'];
+  dataSource;
+  //  = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   loadedActor: string;
   title: string;
   dupCheck: any;
-
+  finding: HealthProvider;
   constructor(
     private activatedRoute:ActivatedRoute,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private actorServ: ActorService
   ) { }
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
     this.activatedRoute.paramMap.subscribe(paramMap=>{
       console.log(paramMap)
       let actor=paramMap.get('existingactor')
@@ -61,9 +63,39 @@ export class ViewActorComponent implements OnInit {
     .join(' ');
  
      })
+
+     this.actorServ.getAllProviders().subscribe(res=>{
+       console.log(res);
+       this.finding=res.find(el=>{
+         return el.providerName==this.loadedActor;
+       })
+       console.log(this.finding,this.finding._id)
+       this.getActorsToTable(this.finding._id);
+      //  this.actorServ.getProviderList(this.finding._id).subscribe(res=>{
+      //   console.log(res);
+      //  this.dataSource = new MatTableDataSource<AddProvider>(res);
+      //  this.dataSource.paginator = this.paginator;
+ 
+      // },
+      // err=>{
+      //   console.log(err);
+      // })
+     })
+
+ 
   }
 
-  delete(){
+  getActorsToTable(id){
+    this.actorServ.getProviderList(id).subscribe(res=>{
+      console.log(res);
+     this.dataSource = new MatTableDataSource<AddProvider>(res);
+     this.dataSource.paginator = this.paginator;  },
+     err=>{
+       console.log(err);
+     })
+  }
+
+  delete(element){
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       width: '250px',
       // data: 
@@ -71,7 +103,11 @@ export class ViewActorComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed',result);
-      // this.animal = result;
+      console.log(element)
+      if(result){
+        this.actorServ.deleteProvider(element._id);
+        this.getActorsToTable(this.finding._id)
+      }
     });
   }
 
@@ -89,10 +125,11 @@ export class ViewActorComponent implements OnInit {
 
   view(element){
     const dialogRef = this.dialog.open(ViewDialogComponent, {
-      width: '250px',
-      // data: 
+      width: '50%',
+      data: {data:element,role:this.loadedActor}
+     
     });
-
+    console.log(element);
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed',result);
       // this.animal = result;

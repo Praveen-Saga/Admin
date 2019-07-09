@@ -6,7 +6,7 @@ import { navigation } from '../../navigation/navigation'
 import {  Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment.hmr';
-import {  HealthProvider } from './actor.model';
+import {  HealthProvider, AddProvider } from './actor.model';
 
 
 @Injectable({
@@ -33,8 +33,28 @@ export class ActorService {
    return  this.http.get<HealthProvider[]>(environment.url+'getProviders')
       
   }
+
+  addProvider(post){
+    this.http.post<AddProvider>(environment.url+'addactor',post).subscribe(res=>{
+      console.log(res);
+    },  
+    err=>{
+      console.log(err)
+    })
+  }
+  getProviderList(id){
+    return this.http.get<AddProvider[]>(environment.url+'getActor/'+id)
+  }
+  deleteProvider(id){
+    return this.http.delete(environment.url+'deleteActor/'+id).subscribe(res=>{
+      console.log(res);
+    },
+    err=>{
+      console.log(err);
+    })
+  }
   createNewActor(role:string){
-    const myrole=role.toLowerCase();
+    const myrole=role.toLowerCase().replace(' ','-');
    
     this.dupCheck=navigation[1].children.find(el=>{
       console.log(el.id);
