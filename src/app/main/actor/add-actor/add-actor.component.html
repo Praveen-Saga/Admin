@@ -1,7 +1,7 @@
 <div class="page-layout blank" fusePerfectScrollbar>
     <div class="mb-24" fxLayout="column" fxLayoutAlign="start center" fxLayout.gt-md="row">
     <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start"  fxFlex="100" 
-    fxFlex="1 0 auto" name="form" >
+    fxFlex="1 0 auto" name="form" #addForm='ngForm'>
         <div class="h2 mb-24" style="text-align: center">Add New {{title}}</div>
   
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
@@ -13,16 +13,18 @@
 
             <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                     <mat-label>Qualification</mat-label>     
-                    <input matInput placeholder="Qualification" name="qualification" [(ngModel)]='addActor.qualification'>
+                    <input matInput placeholder="Qualification" name="qualification" [(ngModel)]='addActor.qualification' required>
+                    <mat-error>Qualification is Required!</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%" *ngIf='loadedActor=="doctor"'>
                     <mat-label>Speciality</mat-label>     
-                    <mat-select placeholder='Speciality' name="speciality" [(ngModel)]='addActor.speciality'>
+                    <mat-select placeholder='Speciality' name="speciality" [(ngModel)]='addActor.speciality' required>
                         <mat-option value="Cardiology">1</mat-option>
                         <mat-option value='Opthomology'>1</mat-option>
                         <mat-option value='Dentalology'>1</mat-option>
                         <mat-option value='Dermatology'>1</mat-option>
                     </mat-select>
+                    <mat-error>Speciality is Required!</mat-error>
             </mat-form-field>
             
         </div>
@@ -30,31 +32,34 @@
                  <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%"
                  *ngIf='loadedActor=="doctor" || loadedActor=="nurse"' >
                         <mat-label>Gender</mat-label>     
-                        <mat-select placeholder='Gender' name="gender" [(ngModel)]='addActor.gender'>
+                        <mat-select placeholder='Gender' name="gender" [(ngModel)]='addActor.gender' required>
                                 <mat-option value='Male'>Male</mat-option>
                                 <mat-option value='Female'>Female</mat-option>
                                 <mat-option value='Other'>Other</mat-option>
                         </mat-select>
+                    <mat-error>Gender is Required!</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                         <mat-label>Experience(in years)</mat-label>     
-                        <input matInput type="number" min="0" placeholder="Experience" name="Experience" [(ngModel)]='addActor.experience'>
+                        <input matInput type="number" min="0" placeholder="Experience" name="Experience" [(ngModel)]='addActor.experience' required>
+                    <mat-error>Experience is Required!</mat-error>                        
                 </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%"
                 *ngIf='loadedActor=="doctor" || loadedActor=="nurse"'>
                         <mat-label>Language</mat-label>     
-                        <mat-select placeholder='Language' name="language" [(ngModel)]='addActor.language'>
+                        <mat-select placeholder='Language' name="language" [(ngModel)]='addActor.language' required>
                                 <mat-option value='Telugu'>Telugu</mat-option>
                                 <mat-option value='English'>English</mat-option>
                                 <mat-option value='Hindi'>Hindi</mat-option>
                                 <mat-option value='Other'>Other</mat-option>
                             </mat-select>
+                         <mat-error>Language is Required!</mat-error>
                 </mat-form-field>
         </div>
         <div fxLayout="row" class="mb-12" fxLayoutAlign="start center" fxFlex="1 0 auto">
         <div fxLayout='column' fxFlex="100" class="pr-12" >
                 <mat-label>Upload Photo</mat-label>
-                <input  type="file" fxFlex="100" accept="image/jpeg, image/png" (change)='imagePicked($event)'>
+                <input  type="file" fxFlex="100" accept="image/jpeg, image/png" (change)='imagePicked($event)' required>
             </div>
         </div>
         <div fxLayout='column' fxFlex="100" class="pr-12 image-preview" *ngIf='imagePreview!=="" && imagePreview'>
@@ -63,18 +68,24 @@
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                         <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                                 <mat-label>Phone</mat-label>
-                                <input matInput type="tel"  placeholder="Phone" name="phone" [(ngModel)]='addActor.phone'/>
+                                <input matInput type="tel"  placeholder="Phone" name="phone" #phone='ngModel'
+                                pattern="[0-9]{10}" [(ngModel)]='addActor.phone' required/>
+                                <mat-error *ngIf="phone.errors?.required">Phone Number is Required!</mat-error>
+                                <mat-error *ngIf="phone.errors?.pattern">Please Enter a Valid Phone Number!</mat-error>
                         </mat-form-field>  
                         <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                                         <mat-label>Email</mat-label>
-                                <input matInput type="email"  placeholder="Email" name="email" [(ngModel)]='addActor.email'/>
+                                <input matInput type="email"  placeholder="Email" name="email" 
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" #email='ngModel' [(ngModel)]='addActor.email' required/>
+                                <mat-error *ngIf="email.errors?.required">Email is Required!</mat-error>
+                                <mat-error *ngIf="email.errors?.pattern">Please Enter a Valid Email Id!</mat-error>
                         </mat-form-field>   
                 </div>
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
             <div class="h2 pr-12 mb-12" fxFlex="100" style="width: 33%">Availabilty</div>
             <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                     <mat-label>Availabile Days</mat-label>     
-                    <mat-select placeholder='Availabile Days' name='days' [(ngModel)]='availableDays'>
+                    <mat-select placeholder='Availabile Days' name='days' [(ngModel)]='availableDays' >
                             <mat-option value='Sunday'>Sunday</mat-option>
                             <mat-option value='Monday'>Monday</mat-option>
                             <mat-option value='Tuesday'>Tuesday</mat-option>
@@ -85,10 +96,11 @@
                             <mat-option value='Monday to Saturday'>Monday to Saturday</mat-option>  
                             <mat-option value='Everyday'>Everyday</mat-option>  
                         </mat-select>
+                        <!-- <mat-error>Days of Availbility is Required!</mat-error> -->
             </mat-form-field> 
             <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                     <mat-label>Availabile Slots</mat-label>     
-                    <mat-select placeholder='Availabile Days' name='slots' [(ngModel)]='availableSlots' multiple=true>
+                    <mat-select placeholder='Availabile Days' name='slots' [(ngModel)]='availableSlots' multiple=true >
                             <mat-option value='Slot-1'>Slot-1</mat-option>  
                             <mat-option value='Slot-2'>Slot-2</mat-option>  
                             <mat-option value='Slot-3'>Slot-3</mat-option>  
@@ -106,6 +118,7 @@
                             <mat-option value='Slot-15'>Slot-15</mat-option>  
                             <mat-option value='Slot-16'>Slot-16</mat-option>  
                         </mat-select>
+                        <!-- <mat-error>Available slots is Required!</mat-error> -->
             </mat-form-field> 
             
             <button mat-raised-button color="primary" type="button" (click)='availability($event)'>Add</button>
@@ -133,21 +146,25 @@
                 <div class="h2 pr-30 mb-12" style="width:33%">Location</div>     
 
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
-                        <input matInput type="number"  placeholder="Latitude"  name="latitude" [(ngModel)]='addActor.latitude'/>
+                        <input matInput type="number"  placeholder="Latitude"  name="latitude" [(ngModel)]='addActor.latitude' required/>
+                        <mat-error>Latitude is Required!</mat-error>
                 </mat-form-field>  
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
-                        <input matInput type="number"  placeholder="Longitude" name="longitude" [(ngModel)]='addActor.longitude' />
+                        <input matInput type="number"  placeholder="Longitude" name="longitude" [(ngModel)]='addActor.longitude' required/>
+                        <mat-error>Longitude is Required!</mat-error>                        
                 </mat-form-field>
         </div>
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                         <mat-label *ngIf='loadedActor=="doctor" || loadedActor=="nurse"'>Hospital/Clinic Address</mat-label> 
                         <mat-label *ngIf='loadedActor!=="doctor" && loadedActor!=="nurse"'>Address</mat-label> 
-                        <textarea matInput placeholder="Address" name="address" [(ngModel)]='addActor.address'></textarea> 
+                        <textarea matInput placeholder="Address" name="address" [(ngModel)]='addActor.address' required></textarea> 
+                        <mat-error>Address is Required!</mat-error>                        
                 </mat-form-field>
         </div>
-        <div class='px-24' fxLayoutAlign="center center" style="margin:auto;text-align: center  ">
-                <button mat-raised-button color="accent" style="width:200px;margin:auto;" (click)='submit()'>Submit</button>
+        <div class='px-24' fxLayoutAlign="center center" style="margin:auto;text-align: center;" *ngIf='!role || role==""'>
+                <button mat-raised-button color="accent" style="width:200px;margin:auto;" (click)='submit()'
+                [disabled]="!(addForm.valid) && (addActor.slots!=[])">Submit</button>
         </div>
     </form>
     </div>

@@ -31,7 +31,7 @@ export interface PeriodicElement {
     address: string;
     latitude: number;
     longitude: number;
-    photo: File;
+    photo: string;
     gender: string;
     phone: number;
     email: string;

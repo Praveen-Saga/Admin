@@ -46,12 +46,20 @@ export class ActorService {
     return this.http.get<AddProvider[]>(environment.url+'getActor/'+id)
   }
   deleteProvider(id){
-    return this.http.delete(environment.url+'deleteActor/'+id).subscribe(res=>{
-      console.log(res);
-    },
-    err=>{
-      console.log(err);
-    })
+    return this.http.delete(environment.url+'deleteActor/'+id)
+  }
+
+  imageUpload(title:string, file: File){
+    let imageData=new FormData();
+    imageData.append("file",file,title);
+    console.log(imageData);
+    return this.http.post(environment.url+'upload',imageData);
+  }
+  getImage(title){
+    return this.http.get(environment.url+"download/"+title)
+  }
+  updateProvider(id,post){
+    return this.http.put(environment.url+'updateactor/'+id,post)
   }
   createNewActor(role:string){
     const myrole=role.toLowerCase().replace(' ','-');

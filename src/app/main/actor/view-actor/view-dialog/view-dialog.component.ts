@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { DialogData } from '../../actor.model';
+import { DialogData, AddProvider } from '../../actor.model';
+import { environment } from 'environments/environment.prod';
 
 @Component({
   selector: 'app-view-dialog',
@@ -8,13 +9,16 @@ import { DialogData } from '../../actor.model';
   styleUrls: ['./view-dialog.component.scss']
 })
 export class ViewDialogComponent implements OnInit {
+  imagePreview:string;
 
   constructor(
     public dialogRef: MatDialogRef<ViewDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    @Inject(MAT_DIALOG_DATA) 
+    public data: { data: AddProvider,role: string},
   ) { }
 
   ngOnInit() {
+    this.imagePreview=environment.url+this.data.data.photo;
   }
 
   onNoClick(): void {

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, OnChanges, ɵɵNgOnChangesFeature} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -61,29 +61,22 @@ export class ViewActorComponent implements OnInit {
     .split(' ')
     .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
     .join(' ');
- 
+       console.log(this.title);
+       this.actorServ.getAllProviders().subscribe(res=>{
+        console.log(res);
+        this.finding=res.find(el=>{
+          return el.providerName==this.loadedActor;
+        })
+        console.log(this.finding,this.finding._id)
+        this.getActorsToTable(this.finding._id);
+      })
      })
 
-     this.actorServ.getAllProviders().subscribe(res=>{
-       console.log(res);
-       this.finding=res.find(el=>{
-         return el.providerName==this.loadedActor;
-       })
-       console.log(this.finding,this.finding._id)
-       this.getActorsToTable(this.finding._id);
-      //  this.actorServ.getProviderList(this.finding._id).subscribe(res=>{
-      //   console.log(res);
-      //  this.dataSource = new MatTableDataSource<AddProvider>(res);
-      //  this.dataSource.paginator = this.paginator;
- 
-      // },
-      // err=>{
-      //   console.log(err);
-      // })
-     })
+    
 
  
   }
+
 
   getActorsToTable(id){
     this.actorServ.getProviderList(id).subscribe(res=>{
@@ -105,36 +98,47 @@ export class ViewActorComponent implements OnInit {
       console.log('The dialog was closed',result);
       console.log(element)
       if(result){
-        this.actorServ.deleteProvider(element._id);
-        this.getActorsToTable(this.finding._id)
+        this.actorServ.deleteProvider(element._id).subscribe(res=>{
+          console.log(res);
+          this.getActorsToTable(this.finding._id)
+        },
+        err=>{
+          console.log(err);
+        });
       }
     });
   }
 
   edit(element){
     const dialogRef = this.dialog.open(EditDialogComponent, {
-      width: '250px',
-      // data: 
+      width: '50%',
+      data: {data:element,role:this.loadedActor}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed',result);
-      // this.animal = result;
+      this.actorServ.updateProvider(result._id,result).subscribe(res=>{
+        console.log(res);
+        this.getActorsToTable(this.finding._id)
+      },
+      err=>{
+        console.log(err);
+      })
     });
   }
 
   view(element){
+    console.log(element.phone);
+
     const dialogRef = this.dialog.open(ViewDialogComponent, {
       width: '50%',
       data: {data:element,role:this.loadedActor}
      
     });
-    console.log(element);
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed',result);
       // this.animal = result;
     });
   }
-  // }
 
 }

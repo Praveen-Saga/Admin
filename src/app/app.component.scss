@@ -49,7 +49,7 @@
         max-width: 360px;
     }
 
-    .nav .nav-item.nav-collapsable > .children > .nav-item > .nav-link{
+    .nav .nav-item.nav-collapsable > .children > .nav-item > .nav-link, .nav .nav-item.nav-collapsable > .children > .nav-item.nav-group > .group-title, .nav .nav-item.nav-collapsable > .children > .nav-item.nav-group > .group-items > .nav-item > .nav-link{
         padding-left:0px !important;
     }
 }
