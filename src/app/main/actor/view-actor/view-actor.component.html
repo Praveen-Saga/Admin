@@ -1,16 +1,35 @@
 <div class="page-layout blank" fusePerfectScrollbar>
     <div class="mb-24" fxLayout="column" fxLayoutAlign="start center" fxLayout.gt-md="row">
         <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start"  fxFlex="100" 
-            fxFlex="1 0 auto" name="form" >
+            fxFlex="1 0 auto" name="form" #searchForm='ngForm' (ngSubmit)='sendSearchData(searchForm)'>
             <div class="h2 mb-24" style="text-align: center">Search {{title}}</div>
       
             <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                     <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                             <mat-label>Name</mat-label>     
-                            <input matInput placeholder="Name" >
+                            <input matInput placeholder="Name" name="name" [(ngModel)]='search.name'>
                     </mat-form-field>
 
+
                     <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                        <mat-label>Phone</mat-label>
+                        <input matInput type="tel"  placeholder="Phone" name="phone" [(ngModel)]='search.phone' #phone='ngModel'
+                        pattern="[0-9]{10}"/>
+                        <!-- #phone='ngModel' -->
+                        <!-- <mat-error *ngIf="phone.errors?.required">Phone Number is Required!</mat-error>
+                        <mat-error *ngIf="phone.errors?.pattern">Please Enter a Valid Phone Number!</mat-error> -->
+                </mat-form-field>  
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                                <mat-label>Email</mat-label>
+                        <input matInput type="email"  placeholder="Email" name="email" [(ngModel)]='search.email'/>
+                        <!-- pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"  /> -->
+                        <!-- #email='ngModel' -->
+                        <!-- <mat-error *ngIf="email.errors?.required">Email is Required!</mat-error>
+                        <mat-error *ngIf="email.errors?.pattern">Please Enter a Valid Email Id!</mat-error> -->
+                </mat-form-field>   
+
+
+                    <!-- <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                             <mat-label>Speciality</mat-label>     
                             <mat-select placeholder='Speciality'>
                                 <mat-option>1</mat-option>
@@ -27,9 +46,9 @@
                                     <mat-option value='Female'>Female</mat-option>
                                     <mat-option value='Other'>Other</mat-option>
                             </mat-select>
-                    </mat-form-field>
+                    </mat-form-field> -->
             </div>
-            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                     <div class="h2 pr-12 mb-12" fxFlex="100" style="width: 33%">Availabilty</div>
                     <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                             <mat-label>Availabile Days</mat-label>     
@@ -67,9 +86,9 @@
                                 </mat-select>
                     </mat-form-field> 
                     
-            </div>
+            </div> -->
             <div class='px-24' fxLayoutAlign="center center" style="margin:auto;text-align: center  ">
-                    <button mat-raised-button color="primary" type="button" style="width:200px;margin:auto;">Search</button>
+                    <button mat-raised-button color="primary"  style="width:200px;margin:auto;">Search</button>
             </div>
         </form>
     </div>

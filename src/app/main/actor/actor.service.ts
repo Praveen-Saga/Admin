@@ -39,7 +39,8 @@ export class ActorService {
       console.log(res);
     },  
     err=>{
-      console.log(err)
+      console.log(err);
+      alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
     })
   }
   getProviderList(id){
@@ -61,7 +62,18 @@ export class ActorService {
   updateProvider(id,post){
     return this.http.put(environment.url+'updateactor/'+id,post)
   }
+
+  searchAmongProviders(post){
+    return this.http.post<AddProvider[]>(environment.url+'adminSearch',post)
+  }
+
+  providerWiseCount(id){
+    return this.http.get<number>(environment.url+'actorCount/'+id);
+  }
+
+
   createNewActor(role:string){
+    if(role && role!==""){
     const myrole=role.toLowerCase().replace(' ','-');
    
     this.dupCheck=navigation[1].children.find(el=>{
@@ -100,13 +112,17 @@ export class ActorService {
             ));
     this.dupCheck={};
     this.router.navigateByUrl('/actor/add/'+res.providerName)
+    },
+    err=>{
+      console.log(err);
+      alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
     })
  }
     else{
       alert(role+' Already Exists');
       this.router.navigateByUrl('/actor/add/'+role)
     }
-   
+  }
 }
 
   

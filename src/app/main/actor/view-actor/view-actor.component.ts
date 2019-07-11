@@ -3,12 +3,13 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { navigation } from 'app/navigation/navigation';
-import { PeriodicElement, HealthProvider, AddProvider } from '../actor.model';
+import { PeriodicElement, HealthProvider, AddProvider, SearchPage } from '../actor.model';
 import { MatDialog } from '@angular/material';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 import { ViewDialogComponent } from './view-dialog/view-dialog.component';
 import { ActorService } from '../actor.service';
+import { NgForm } from '@angular/forms';
 
 
 
@@ -33,6 +34,11 @@ export class ViewActorComponent implements OnInit {
   title: string;
   dupCheck: any;
   finding: HealthProvider;
+  search: SearchPage={
+    name:null,
+    phone:null,
+    email:null
+  }
   constructor(
     private activatedRoute:ActivatedRoute,
     private router: Router,
@@ -66,26 +72,44 @@ export class ViewActorComponent implements OnInit {
         console.log(res);
         this.finding=res.find(el=>{
           return el.providerName==this.loadedActor;
+        },
+        err=>{
+          console.log(err);
+          alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
         })
         console.log(this.finding,this.finding._id)
         this.getActorsToTable(this.finding._id);
       })
      })
-
-    
-
- 
   }
 
 
+  sendSearchData(form: NgForm){
+    console.log(this.search);
+    if(this.search.phone==null && this.search.name==null && this.search.email==null){
+      this.getActorsToTable(this.finding._id);
+    }else{
+    this.actorServ.searchAmongProviders(this.search).subscribe(res=>{
+      console.log(res);
+      this.dataSource = new MatTableDataSource<AddProvider>(res);
+      this.dataSource.paginator = this.paginator;
+    },
+    err=>{
+      console.log(err);
+      alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
+    })
+    form.resetForm();
+  }
+  }
   getActorsToTable(id){
     this.actorServ.getProviderList(id).subscribe(res=>{
       console.log(res);
      this.dataSource = new MatTableDataSource<AddProvider>(res);
      this.dataSource.paginator = this.paginator;  },
      err=>{
-       console.log(err);
-     })
+      console.log(err);
+      alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
+    })
   }
 
   delete(element){
@@ -104,6 +128,7 @@ export class ViewActorComponent implements OnInit {
         },
         err=>{
           console.log(err);
+          alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
         });
       }
     });
@@ -117,14 +142,37 @@ export class ViewActorComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed',result);
-      this.actorServ.updateProvider(result._id,result).subscribe(res=>{
+      if(result){
+      let photoTitle=result.data.phone.toString().concat(".jpg")
+      console.log(result.loadedFile)
+      if(result.loadedFile){
+      this.actorServ.imageUpload(photoTitle,result.loadedFile)
+      .subscribe(res=>{
+      console.log(res);
+      this.actorServ.updateProvider(result.data._id,result.data).subscribe(res=>{
         console.log(res);
         this.getActorsToTable(this.finding._id)
       },
       err=>{
         console.log(err);
+        alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
       })
+    },err=>{
+      console.log(err);
+      alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
     });
+  }else{
+    this.actorServ.updateProvider(result.data._id,result.data).subscribe(res=>{
+      console.log(res);
+      this.getActorsToTable(this.finding._id)
+    },
+    err=>{
+      console.log(err);
+      alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
+    })
+  }
+}
+  });
   }
 
   view(element){

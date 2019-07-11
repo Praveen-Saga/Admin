@@ -3,7 +3,7 @@ import { DOCUMENT } from '@angular/common';
 import { Platform } from '@angular/cdk/platform';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, interval } from 'rxjs';
-import { takeUntil, retryWhen } from 'rxjs/operators';
+import { takeUntil, retryWhen, count } from 'rxjs/operators';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
@@ -164,32 +164,43 @@ export class AppComponent implements OnInit, OnDestroy
           })).subscribe(res=>{
             console.log(res);
             res.forEach(el=>{
+                let myUrl=el.providerName.toLowerCase();
               let myTitle=el.providerName.toLowerCase().replace("-"," ")
               .split(' ')
               .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
               .join(' ');
-              this._fuseNavigationService.updateNavigationItem('health-providers',
-              navigation[1].children.push({
-                id:el.providerName,
-                title:myTitle,
-                type:'collapsable',
-                icon: '',
-                children:[
-                    {
-                        id:'add',
-                        title:'Add New '+myTitle,
-                        type:'item',
-                        url:'/actor/add/'+el.providerName
-                    },
-                    {
-                        id:'view',
-                        title:'View Registered '+myTitle+'s',
-                        type:'item',
-                        url:'/actor/view/'+el.providerName
-                    },
-                ]
-            },
-            ))
+              this.actorServ.providerWiseCount(el._id).subscribe(res=>{
+                  console.log(el.providerName,res);
+                this._fuseNavigationService.updateNavigationItem('health-providers',
+                navigation[1].children.push({
+                  id:el.providerName,
+                  title:myTitle,
+                  type:'collapsable',
+                  icon: '',
+                  badge:{
+                      count:res,
+                  },
+                  children:[
+                      {
+                          id:'add',
+                          title:'Add New '+myTitle,
+                          type:'item',
+                          url:'/actor/add/'+myUrl
+                      },
+                      {
+                          id:'view',
+                          title:'View Registered '+myTitle+'s',
+                          type:'item',
+                          url:'/actor/view/'+myUrl
+                      },
+                  ]
+              },
+              ))
+
+              },err=>{
+                  console.log(res)
+              })
+
             })
           },
           err=>{

@@ -65,5 +65,6 @@ export class LoginComponent implements OnInit
     submit(){
         console.log(typeof this.loginForm.value);
         this.loginServ.login(this.loginForm.value)
+        this.loginForm.reset();
     }
 }

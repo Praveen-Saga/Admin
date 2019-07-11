@@ -15,6 +15,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { ViewDialogComponent } from './view-actor/view-dialog/view-dialog.component';
 import { EditDialogComponent } from './view-actor/edit-dialog/edit-dialog.component';
 import { DeleteDialogComponent } from './view-actor/delete-dialog/delete-dialog.component';
+import { AddQualificationComponent } from './add-qualification/add-qualification.component';
 
 
 const Material=[
@@ -41,6 +42,10 @@ const routes = [
                 component:CreateSlotComponent
             },
             {
+                path:'add-qualification',
+                component:AddQualificationComponent
+            },
+            {
 
                 path : 'add/:newactor',
                 component: AddActorComponent
@@ -61,7 +66,8 @@ const routes = [
     CreateSlotComponent,
     ViewDialogComponent,
     EditDialogComponent, 
-    DeleteDialogComponent
+    DeleteDialogComponent, 
+    AddQualificationComponent
 ],
     imports     : [
         CommonModule,

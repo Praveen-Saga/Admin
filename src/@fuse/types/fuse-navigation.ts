@@ -14,6 +14,7 @@ export interface FuseNavigationItem
     function?: any;
     badge?: {
         title?: string;
+        count?:number;
         translate?: string;
         bg?: string;
         fg?: string;

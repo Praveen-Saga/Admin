@@ -39,6 +39,14 @@ export const navigation: FuseNavigation[] = [
                 url      : '/actor/create-slot',
                
             },
+            {
+                id       : 'add-qualification',
+                title    : 'Add Qualification',
+                type     : 'item',
+                icon     : 'school',
+                url      : '/actor/add-qualification',
+               
+            },
           
         ],
     },
@@ -154,7 +162,7 @@ export const navigation: FuseNavigation[] = [
                 id       : 'push-notifications',
                 title    : 'Push Notifications',
                 type     : 'item',
-                icon     : 'notification_important',
+                icon     : 'sms',
                 url      : '/push-notifications',
              },
         ]

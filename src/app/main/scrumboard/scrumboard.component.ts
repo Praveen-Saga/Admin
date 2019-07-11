@@ -36,6 +36,7 @@ export class ScrumboardComponent implements OnInit, OnDestroy
     constructor(
         private  _router: Router,
         private _scrumboardService: ScrumboardService,
+        private actorServ: ActorService
     )
     {
         // Set the private defaults
@@ -61,6 +62,23 @@ export class ScrumboardComponent implements OnInit, OnDestroy
         this.userBoards=navigation[1].children;
         this.alertBoards=navigation[2].children;
         // this.projectBoards.shift();
+            this.actorServ.getAllProviders().subscribe(res=>{
+                res.forEach(provider=>{
+                        // console.log(provider.providerName,count)
+                        this.userBoards.forEach(board=>{
+                            if(provider.providerName===board.id){
+                    this.actorServ.providerWiseCount(provider._id).subscribe(count=>{
+                            console.log(board)
+                            board.badge.count=count;
+                        })
+                    }
+                })
+                })
+            })
+           
+           this.projectBoards= this.projectBoards.filter(el=>{
+                return el.id!=='dashboard';
+            })
         console.log(this.projectBoards,this.userBoards)
 
 

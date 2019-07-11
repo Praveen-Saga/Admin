@@ -14,7 +14,11 @@ export class CreateActorComponent implements OnInit {
   }
 
   submit(){
+    if(this.Master){
     console.log(this.Master);
-    this.actorServ.createNewActor(this.Master);
+    let newRole=this.Master.replace(/\s+/g, " ");
+    console.log(newRole);
+    this.actorServ.createNewActor(newRole);
+    }
   }
 }

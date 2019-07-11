@@ -36,3 +36,9 @@ export interface PeriodicElement {
     phone: number;
     email: string;
   }
+
+  export interface SearchPage{
+    name: string;
+    phone: number;
+    email: string;
+  }

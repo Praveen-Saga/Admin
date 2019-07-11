@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { navigation } from 'app/navigation/navigation';
-import { AddProvider, Availability, HealthProvider } from '../actor.model';
+import { AddProvider,  HealthProvider } from '../actor.model';
 import { ActorService } from '../actor.service';
-import { environment } from 'environments/environment.hmr';
-import { workers } from 'cluster';
+
+import { NgForm } from '@angular/forms';
+
 
 @Component({
   selector: 'app-add-actor',
@@ -12,6 +13,8 @@ import { workers } from 'cluster';
   styleUrls: ['./add-actor.component.scss']
 })
 export class AddActorComponent implements OnInit {
+  @ViewChild("myFilePicker",{static: true}) filePickerRef: ElementRef;
+
   latitude:number;
   longitude:number;
   availableDays:string;
@@ -26,6 +29,7 @@ export class AddActorComponent implements OnInit {
   imagePreview: string;
   finding: HealthProvider;
   @Input() editData:AddProvider;
+  @Output() filePicker = new EventEmitter()
   addActor: AddProvider={
     providerId: '',
     name: '',
@@ -51,6 +55,7 @@ export class AddActorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('WORKING')
     this.activatedRoute.paramMap.subscribe(paramMap=>{
      let actor=paramMap.get('newactor')
      if(this.role && this.role!==''){
@@ -78,6 +83,9 @@ export class AddActorComponent implements OnInit {
       console.log(res);
       this.finding=res.find(el=>{
         return el.providerName==this.loadedActor
+      },err=>{
+        console.log(err);
+        alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
       })
       console.log(this.finding,this.finding._id)
     })
@@ -85,7 +93,7 @@ export class AddActorComponent implements OnInit {
 
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition(pos=>{
-        console.log(typeof pos.coords.latitude)
+        console.log(pos.coords.latitude)
         this.latitude=pos.coords.latitude;
         this.longitude=pos.coords.longitude;
       })
@@ -104,13 +112,13 @@ export class AddActorComponent implements OnInit {
     fileReader.readAsDataURL(file);
     this.loadedFile=file
     console.log(this.loadedFile)
-    // this.actorServ.imageUpload(this.loadedActor,file);
+    this.filePicker.emit(this.loadedFile);
   }
 
 availability(){
   console.log(this.availableDays,this.availableSlots);
   // this.availableSlots.unshift(this.availableDays)
-  if(this.availableDays && this.availableSlots){
+  if(this.availableDays && this.availableSlots && this.availableDays!==null && this.availableSlots!==[]){
   this.dayDupCheck=this.addActor.slots.find(el=>{
     console.log(el.availableDays);
     return el.availableDays==(this.availableDays && 'Everyday') ;
@@ -128,24 +136,33 @@ else{
  console.log(this.addActor.slots)
  this.availableDays='';
  this.availableSlots=[];
+}else{
+  alert('Submit Valid Availablity Days and Slots..!')
 }
 }
 
-submit(){
-  // let photoTitle=this.addActor.phone.toString().concat(".jpg")
-  // this.actorServ.imageUpload(photoTitle,this.loadedFile)
-  // .subscribe(res=>{
-  //     console.log(res);
-  //     this.addActor.providerId=this.finding._id;
-  //     this.addActor.photo="download/"+photoTitle
-  //     console.log(this.addActor);
-  //     this.actorServ.addProvider(this.addActor);
-  // },
-  // err=>{
-  //   console.log(err);
-  // });
-  console.log(this.addActor)
-  // console.log(this.addActor.phone.toString().concat(".jpg"))
+submit(form:NgForm){
+  // console.log(this.addActor)
+  if(this.loadedFile){
+  let photoTitle=this.addActor.phone.toString().concat(".jpg")
+  this.actorServ.imageUpload(photoTitle,this.loadedFile)
+  .subscribe(res=>{
+      console.log(res);
+      this.addActor.providerId=this.finding._id;
+      this.addActor.photo="download/"+photoTitle
+      console.log(this.addActor);
+      this.actorServ.addProvider(this.addActor);
+      form.resetForm();
+      this.addActor.slots=[];
+    this.filePickerRef.nativeElement.value=""
+    this.imagePreview="";
+  },
+  err=>{
+    console.log(err);
+    alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
+  });
+  console.log(this.addActor.phone.toString().concat(".jpg"));
+  
   // this.actorServ.getImage(this.addActor.email.concat(".jpg")).subscribe(res=>{
   //   console.log(res);
   // },
@@ -153,5 +170,8 @@ submit(){
   //   console.log(err);
   // })
 
+}else{
+  alert('Please upload Photo..!')
+}
 }
 }
