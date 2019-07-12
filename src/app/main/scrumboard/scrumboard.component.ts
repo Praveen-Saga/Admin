@@ -62,6 +62,8 @@ export class ScrumboardComponent implements OnInit, OnDestroy
         this.userBoards=navigation[1].children;
         this.alertBoards=navigation[2].children;
         // this.projectBoards.shift();
+
+        // Getting Providers and Providers count to Dashboard
             this.actorServ.getAllProviders().subscribe(res=>{
                 res.forEach(provider=>{
                         // console.log(provider.providerName,count)
@@ -70,12 +72,20 @@ export class ScrumboardComponent implements OnInit, OnDestroy
                     this.actorServ.providerWiseCount(provider._id).subscribe(count=>{
                             console.log(board)
                             board.badge.count=count;
+                        },
+                        err=>{
+                            this.actorServ.errHandler(err);
                         })
                     }
                 })
                 })
+            },
+            err=>{
+                this.actorServ.errHandler(err)
             })
+        // Getting Providers and Providers count to Dashboard
            
+        // Removing Dashboard Page from the Project Boards
            this.projectBoards= this.projectBoards.filter(el=>{
                 return el.id!=='dashboard';
             })

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './main/login/auth.guard';
 
 const routes: Routes = [
   { 
@@ -21,28 +22,38 @@ const routes: Routes = [
   // },
   { 
     path: 'dashboard', 
-    loadChildren: './main/scrumboard/scrumboard.module#ScrumboardModule' 
+    loadChildren: './main/scrumboard/scrumboard.module#ScrumboardModule' ,
+    canLoad:[AuthGuard]
   },
 
   { 
     path: 'actor', 
-    loadChildren: './main/actor/actor.module#ActorModule' 
+    loadChildren: './main/actor/actor.module#ActorModule' ,
+    canLoad:[AuthGuard]
   },
   { 
     path: 'reports', 
-    loadChildren: './main/reports/reports.module#ReportsModule' 
+    loadChildren: './main/reports/reports.module#ReportsModule' ,
+    canLoad:[AuthGuard]
   },
   { 
     path: 'banner', 
-    loadChildren: './main/banner/banners.module#BannersModule' 
+    loadChildren: './main/banner/banners.module#BannersModule' ,
+    canLoad:[AuthGuard]
   },
   { 
     path: 'push-notifications', 
-    loadChildren: './main/push-notifications/push-notifications.module#PushNotificationsModule' 
+    loadChildren: './main/push-notifications/push-notifications.module#PushNotificationsModule' ,
+    canLoad:[AuthGuard]
+  },
+  {
+    path:'',
+    redirectTo:'dashboard',
+    pathMatch:'full'
   },
   {
     path:'**',
-    redirectTo:'login',
+    redirectTo:'dashboard',
     pathMatch:'full'
   }
 ];

@@ -1,13 +1,13 @@
 <div class="page-layout blank" fusePerfectScrollbar>
     <div class="mb-24" fxLayout="column" fxLayoutAlign="start center" fxLayout.gt-md="row">
         <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start"  fxFlex="100" 
-        fxFlex="1 0 auto" name="form" >
+        fxFlex="1 0 auto" name="form" #form='ngForm' (ngSubmit)='submit(form)'>
             <div class="h2 mb-24" style="text-align: center">Create New Time Slot</div>
             <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                         <mat-label>From</mat-label>
                         <input matInput [ngxTimepicker]="fromPicker" name="fromTime" [format]=24 min="07:00" 
-                        max="22:00" [(ngModel)]='fromTime'>
+                        max="22:00" [(ngModel)]='fromTime' (focus)="toTimeCal()">
                         <ngx-material-timepicker #fromPicker></ngx-material-timepicker>
                 </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
@@ -16,7 +16,7 @@
                     max="23:00" [(ngModel)]='toTime' [disabled]='true'>
                     <ngx-material-timepicker #toPicker></ngx-material-timepicker>
             </mat-form-field>
-                <button mat-raised-button color="accent" (click)='submit()' style="width:200px;margin:auto;">Submit</button>
+                <button mat-raised-button color="accent" style="width:200px;margin:auto;">Submit</button>
             </div>
         </form>
     </div>

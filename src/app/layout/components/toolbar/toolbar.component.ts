@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
@@ -8,6 +8,7 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { navigation } from 'app/navigation/navigation';
+import { LoginService } from 'app/main/login/login.service';
 
 @Component({
     selector     : 'toolbar',
@@ -25,6 +26,8 @@ export class ToolbarComponent implements OnInit, OnDestroy
     navigation: any;
     selectedLanguage: any;
     userStatusOptions: any[];
+    loginSub: Subscription;
+    userTitle: string;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -39,7 +42,8 @@ export class ToolbarComponent implements OnInit, OnDestroy
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService,
-        private _translateService: TranslateService
+        private _translateService: TranslateService,
+        private loginServ: LoginService
     )
     {
         // Set the defaults
@@ -110,6 +114,13 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
         // Set the selected language from default languages
         this.selectedLanguage = _.find(this.languages, {'id': this._translateService.currentLang});
+        this.loginSub=this.loginServ.getUser().subscribe(res=>{
+            console.log(res);
+            if(res.resEmail!==""){
+                this.userTitle=res.resEmail[0].toUpperCase()+res.resEmail.slice(1).split("@").shift();
+            }
+        })
+        
     }
 
     /**
@@ -120,8 +131,12 @@ export class ToolbarComponent implements OnInit, OnDestroy
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+        this.loginSub.unsubscribe();
     }
-
+    
+    onLogout(){
+        this.loginServ.logout();
+    }
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------

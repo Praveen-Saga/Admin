@@ -49,6 +49,7 @@ export class ViewActorComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   ngOnInit() {
+    // getting Providers and actor wise list
     this.activatedRoute.paramMap.subscribe(paramMap=>{
       console.log(paramMap)
       let actor=paramMap.get('existingactor')
@@ -82,8 +83,10 @@ export class ViewActorComponent implements OnInit {
       })
      })
   }
+    // getting Providers and actor wise list
+ 
 
-
+// Search
   sendSearchData(form: NgForm){
     console.log(this.search);
     if(this.search.phone==null && this.search.name==null && this.search.email==null){
@@ -111,7 +114,9 @@ export class ViewActorComponent implements OnInit {
       alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
     })
   }
+// Search
 
+// Delete
   delete(element){
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       width: '250px',
@@ -133,7 +138,9 @@ export class ViewActorComponent implements OnInit {
       }
     });
   }
+// Delete
 
+// Edit
   edit(element){
     const dialogRef = this.dialog.open(EditDialogComponent, {
       width: '50%',
@@ -174,7 +181,9 @@ export class ViewActorComponent implements OnInit {
 }
   });
   }
+// Edit
 
+// View
   view(element){
     console.log(element.phone);
 
@@ -188,5 +197,6 @@ export class ViewActorComponent implements OnInit {
       // this.animal = result;
     });
   }
+// View
 
 }

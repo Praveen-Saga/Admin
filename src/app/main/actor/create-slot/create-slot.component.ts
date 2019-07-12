@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { totalmem } from 'os';
+import { ActorService } from '../actor.service';
+import { Slots } from '../actor.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-create-slot',
@@ -7,18 +11,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateSlotComponent implements OnInit {
   fromTime:string;
-
-  constructor() { }
+  toTime:string;
+  constructor(
+    private actorServ:ActorService,
+  ) { }
 
   ngOnInit() {
   }
+  toTimeCal(){
+    console.log(this.fromTime);
+    if(this.fromTime && this.fromTime!==null){
+      let fromadd=+(this.fromTime[0]+this.fromTime[1])+1
+      let balanceTime=this.fromTime.slice(2);
+      let fromAddStr
+      if(fromadd.toString().length<2){
+        fromAddStr="0"+fromadd.toString()
+      }else{
+        fromAddStr=fromadd.toString();
+      }
 
-  submit(){
-    console.log(typeof this.fromTime,new Date().toLocaleString());
-    for(let i=0;i<this.fromTime.length;i++){
-      console.log(this.fromTime[i]);
+      this.toTime=fromAddStr.concat(balanceTime);
+      console.log(this.fromTime,this.toTime);
     }
-    console.log(+(this.fromTime[0]+this.fromTime[1]));
-
+  }
+  submit(form:NgForm){
+    const slot:Slots={fromtime:this.fromTime,totime:this.toTime}
+    console.log(slot);
+    this.actorServ.addSlots(slot);
+    form.resetForm();
   }
 }

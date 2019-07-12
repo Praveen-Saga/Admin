@@ -1,6 +1,6 @@
 export interface HealthProvider{
-    _id:'string';
-    providerName:'string';
+    _id:string;
+    providerName:string;
 }
 
 export interface PeriodicElement {
@@ -42,3 +42,28 @@ export interface PeriodicElement {
     phone: number;
     email: string;
   }
+
+  export interface LoginResponse{
+    _id:string;
+    email:string;
+    password:string;
+    token?:string;
+    expirationTime?:string;
+  }
+
+  export interface AuthDetails{
+    resEmail:string;
+  }
+
+  export interface Qualification{
+    _id?:string,
+    providerId:string;
+    qualification:string;
+  } 
+  export interface Slots{
+    _id?:string,
+    fromtime:string;
+    totime:string;
+    slotValue?:string;
+  }
+

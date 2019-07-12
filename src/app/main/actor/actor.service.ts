@@ -6,15 +6,15 @@ import { navigation } from '../../navigation/navigation'
 import {  Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment.hmr';
-import {  HealthProvider, AddProvider } from './actor.model';
+import {  HealthProvider, AddProvider, Qualification, Slots } from './actor.model';
+import { retry } from 'rxjs/operators';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ActorService {
-  // getRole:Observable<FuseNavigation[]>;
-  // private roleSubject =new Subject<FuseNavigation[]>();
+
   roleData:FuseNavigation;
   rolesArr:string[]=['doctor','nurse','medical-store','transport'];
   dupCheck={};
@@ -26,29 +26,83 @@ export class ActorService {
     
   }
 
-  // get myRole(){
-  //   return this.getRole=this.roleSubject.asObservable()
-  // }
+  // Providers 
+  // Getting All Providers
   getAllProviders(){
-   return  this.http.get<HealthProvider[]>(environment.url+'getProviders')
-      
+   return  this.http.get<HealthProvider[]>(environment.url+'getProviders').pipe(retry(5));   
   }
-
+  // Getting All Providers
+  // Adding Provider Master 
   addProvider(post){
     this.http.post<AddProvider>(environment.url+'addactor',post).subscribe(res=>{
       console.log(res);
     },  
     err=>{
-      console.log(err);
-      alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
+      this.errHandler(err)
+
     })
   }
+  // Adding Provider Master 
+ 
+  // Getting Providers List (List of Doctors,Nurses etc list in view page)
   getProviderList(id){
     return this.http.get<AddProvider[]>(environment.url+'getActor/'+id)
   }
-  deleteProvider(id){
-    return this.http.delete(environment.url+'deleteActor/'+id)
+  // Getting Providers List
+
+  // Provider Wise Count for Dashboard
+  providerWiseCount(id){
+    return this.http.get<number>(environment.url+'actorCount/'+id);
   }
+  // Provider Wise Count for Dashboard
+  // Providers
+
+
+  // Adding and Getting Qualifications
+  // Adding Qualifications Master
+  addQualification(post){
+    this.http.post<Qualification>(environment.url+'addqualification/',post).subscribe(res=>{
+      console.log(res);
+    },
+    err=>{
+     this.errHandler(err);
+     })
+  }
+  // Adding Qualifications Master
+  // Getting Qualifications 
+  getQualifications(id){
+  return  this.http.get<Qualification[]>(environment.url+'getQualification/'+id);
+  }
+  // Getting Qualifications 
+  // Adding  and Getting Qualifications
+  
+  
+
+  // adding and getting slots
+
+
+  addSlots(post){
+    return this.http.post<Slots>(environment.url+'slotmaster',post).subscribe(res=>{
+      console.log(res);
+      alert('Success '+ res.fromtime +" to "+res.totime+" Slot Added");
+    },
+    err=>{
+      this.errHandler(err)
+      // console.log(err);
+      // if(err.error && err.error.message){
+      // alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText)+'\n'+JSON.stringify(err.error.message))
+      // }else{
+      //   alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
+      // }
+    })
+  }
+  getSlots(){
+    return this.http.get<Slots[]>(environment.url+'getSlotmaster');
+  }
+
+  // adding and getting slots 
+
+  // adding and getting Images
 
   imageUpload(title:string, file: File){
     let imageData=new FormData();
@@ -59,17 +113,28 @@ export class ActorService {
   getImage(title){
     return this.http.get(environment.url+"download/"+title)
   }
+  // adding and getting images
+
+  
+  // Deleting Provider
+  deleteProvider(id){
+    return this.http.delete(environment.url+'deleteActor/'+id)
+  }
+  // Deleting Provider
+
+  // Updating Provider
   updateProvider(id,post){
     return this.http.put(environment.url+'updateactor/'+id,post)
   }
+  // Updating Provider
 
+  // Search in Providers
   searchAmongProviders(post){
     return this.http.post<AddProvider[]>(environment.url+'adminSearch',post)
   }
+  // Search in Providers
 
-  providerWiseCount(id){
-    return this.http.get<number>(environment.url+'actorCount/'+id);
-  }
+
 
 
   createNewActor(role:string){
@@ -114,8 +179,7 @@ export class ActorService {
     this.router.navigateByUrl('/actor/add/'+res.providerName)
     },
     err=>{
-      console.log(err);
-      alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
+     this.errHandler(err);
     })
  }
     else{
@@ -125,5 +189,20 @@ export class ActorService {
   }
 }
 
+
+errHandler(err){
+  console.log(err);
+      if(err.error && err.error.message){
+        alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText)+'\n'+JSON.stringify(err.error.message))
+        }
+        else if(err.message)
+        {
+          alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText)+'\n'+JSON.stringify(err.message))
+
+        }
+        else{
+          alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
+        }
+}
   
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { navigation } from 'app/navigation/navigation';
-import { AddProvider,  HealthProvider } from '../actor.model';
+import { AddProvider,  HealthProvider, Qualification, Slots } from '../actor.model';
 import { ActorService } from '../actor.service';
 
 import { NgForm } from '@angular/forms';
@@ -30,6 +30,8 @@ export class AddActorComponent implements OnInit {
   finding: HealthProvider;
   @Input() editData:AddProvider;
   @Output() filePicker = new EventEmitter()
+  Qualifications:Qualification[]=[];
+  slots:Slots[]=[];
   addActor: AddProvider={
     providerId: '',
     name: '',
@@ -46,6 +48,7 @@ export class AddActorComponent implements OnInit {
     phone: null,
     email: ''
   }
+  dupCheck2: any;
 
 
     constructor(
@@ -55,7 +58,8 @@ export class AddActorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('WORKING')
+
+  // Identifying for which provider add Page belongs    
     this.activatedRoute.paramMap.subscribe(paramMap=>{
      let actor=paramMap.get('newactor')
      if(this.role && this.role!==''){
@@ -78,31 +82,68 @@ export class AddActorComponent implements OnInit {
     .join(' ');
 
     })
+  // Identifying for which provider add Page belongs
 
+// Getting Qualifications of Providers
     this.actorServ.getAllProviders().subscribe(res=>{
       console.log(res);
       this.finding=res.find(el=>{
         return el.providerName==this.loadedActor
-      },err=>{
-        console.log(err);
-        alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
       })
       console.log(this.finding,this.finding._id)
+      this.actorServ.getQualifications(this.finding._id).subscribe(res=>{
+        console.log(res);
+        this.Qualifications=res;
+      },
+      err=>{
+        this.actorServ.errHandler(err);
+      })
+    },
+    err=>{
+     this.actorServ.errHandler(err);
     })
+// Getting Qualifications of Providers
 
+// Getting Slots
+    this.actorServ.getSlots().subscribe(res=>{
+      console.log(res);
+      // this.slots=res;
+      res.forEach(el=>{
+        let slot:Slots={
+          fromtime:el.fromtime,
+          totime:el.totime,
+          slotValue:el.fromtime+" to "+el.totime
+        }
+        this.slots.push(slot);
+      })
+    },
+    err=>{
+      this.actorServ.errHandler(err);
+    })
+// Getting Slots
 
+// Geolocator
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition(pos=>{
         console.log(pos.coords.latitude)
-        this.latitude=pos.coords.latitude;
-        this.longitude=pos.coords.longitude;
-      })
+        this.addActor.latitude=pos.coords.latitude;
+        this.addActor.longitude=pos.coords.longitude;
+      },
+      err=>{
+        alert('Getting Current Position Automatically Failed...'+err)
+      },
+      {
+        timeout:10000
+      }
+      )
     }
-    else{
-      alert('Getting Current Position Automatically Failed...!');
-    }
+    // else{
+    //   alert('Getting Current Position Automatically Failed...!');
+    // }
   }
+// Geolocator
 
+// ImagePicker and file preview
   imagePicked( event){
     const file= (event.target as HTMLInputElement).files[0]
     const fileReader= new FileReader;
@@ -114,24 +155,54 @@ export class AddActorComponent implements OnInit {
     console.log(this.loadedFile)
     this.filePicker.emit(this.loadedFile);
   }
+// ImagePicker and file preview
 
+// Availability and Slots
 availability(){
   console.log(this.availableDays,this.availableSlots);
   // this.availableSlots.unshift(this.availableDays)
   if(this.availableDays && this.availableSlots && this.availableDays!==null && this.availableSlots!==[]){
+    console.log(this.addActor.slots)
+  // if(this.availableDays=='Everyday'){   
   this.dayDupCheck=this.addActor.slots.find(el=>{
     console.log(el.availableDays);
-    return el.availableDays==(this.availableDays && 'Everyday') ;
+    return el.availableDays=='Everyday'|| el.availableDays==this.availableDays ;
   })
-  if(this.dayDupCheck==null){
- this.addActor.slots.push({
-  availableDays:this.availableDays,
-  availableTimes:this.availableSlots
-});
-}
-else{
-  console.log(this.dayDupCheck)
-  alert('Slot scheduling for this day is already done..')
+
+  if(this.availableDays=='Everyday'){
+    if(this.addActor.slots.length<1){
+      this.addActor.slots.push({
+        availableDays:this.availableDays,
+        availableTimes:this.availableSlots
+      });
+    }else{
+      alert("Not Possible to Select Everyday Now..");
+    }
+  }
+  // else if(this.availableDays=='Monday to Saturday'){
+  //   this.dupCheck2=this.addActor.slots.filter(el=>{
+  //     return el.availableDays!=='Sunday';
+  //   })
+  //   if(this.dupCheck2==null){
+  //     this.addActor.slots.push({
+  //       availableDays:this.availableDays,
+  //       availableTimes:this.availableSlots
+  //     });
+  //   }else{
+  //     alert('Not Possible to Select Everyday Now..')
+  //   }
+  // }
+  else{
+    if(this.dayDupCheck==null){
+      this.addActor.slots.push({
+        availableDays:this.availableDays,
+        availableTimes:this.availableSlots
+      });
+  }
+  else{
+    console.log(this.dayDupCheck)
+    alert('Slot scheduling for this day is already done..')
+  }
 }
  console.log(this.addActor.slots)
  this.availableDays='';
@@ -140,7 +211,9 @@ else{
   alert('Submit Valid Availablity Days and Slots..!')
 }
 }
+// Availability and Slots
 
+// Submit
 submit(form:NgForm){
   // console.log(this.addActor)
   if(this.loadedFile){
@@ -158,20 +231,16 @@ submit(form:NgForm){
     this.imagePreview="";
   },
   err=>{
-    console.log(err);
-    alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
+    this.actorServ.errHandler(err)
   });
   console.log(this.addActor.phone.toString().concat(".jpg"));
   
-  // this.actorServ.getImage(this.addActor.email.concat(".jpg")).subscribe(res=>{
-  //   console.log(res);
-  // },
-  // err=>{
-  //   console.log(err);
-  // })
+ 
 
 }else{
   alert('Please upload Photo..!')
 }
 }
+// Submit
+
 }
