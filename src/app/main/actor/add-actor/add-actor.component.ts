@@ -48,7 +48,7 @@ export class AddActorComponent implements OnInit {
     phone: null,
     email: ''
   }
-  dupCheck2: any;
+  dayDupCheck2: any;
 
 
     constructor(
@@ -164,10 +164,10 @@ availability(){
   if(this.availableDays && this.availableSlots && this.availableDays!==null && this.availableSlots!==[]){
     console.log(this.addActor.slots)
   // if(this.availableDays=='Everyday'){   
-  this.dayDupCheck=this.addActor.slots.find(el=>{
-    console.log(el.availableDays);
-    return el.availableDays=='Everyday'|| el.availableDays==this.availableDays ;
-  })
+  // this.dayDupCheck=this.addActor.slots.find(el=>{
+  //   console.log(el.availableDays);
+  //   return el.availableDays=='Everyday'|| el.availableDays==this.availableDays ;
+  // })
 
   if(this.availableDays=='Everyday'){
     if(this.addActor.slots.length<1){
@@ -179,30 +179,57 @@ availability(){
       alert("Not Possible to Select Everyday Now..");
     }
   }
-  // else if(this.availableDays=='Monday to Saturday'){
-  //   this.dupCheck2=this.addActor.slots.filter(el=>{
-  //     return el.availableDays!=='Sunday';
-  //   })
-  //   if(this.dupCheck2==null){
-  //     this.addActor.slots.push({
-  //       availableDays:this.availableDays,
-  //       availableTimes:this.availableSlots
-  //     });
-  //   }else{
-  //     alert('Not Possible to Select Everyday Now..')
-  //   }
-  // }
-  else{
-    if(this.dayDupCheck==null){
+  else if(this.availableDays=='Monday to Saturday'){
+    this.dayDupCheck2=this.addActor.slots.filter(el=>{
+      return el.availableDays!=='Sunday';
+    })
+    console.log(this.dayDupCheck2)
+    if(this.dayDupCheck2==null || this.dayDupCheck2.length<1){
       this.addActor.slots.push({
         availableDays:this.availableDays,
         availableTimes:this.availableSlots
       });
+    }else{
+      alert('Not Possible to Select '+this.availableDays+' Now..')
+    }
   }
   else{
-    console.log(this.dayDupCheck)
-    alert('Slot scheduling for this day is already done..')
-  }
+    if(this.availableDays=="Sunday"){
+      this.dayDupCheck=this.addActor.slots.find(el=>{
+        console.log(el.availableDays);
+        return el.availableDays=='Everyday' || el.availableDays=='Sunday' ;
+        
+      })
+      if(this.dayDupCheck==null){
+        this.addActor.slots.push({
+          availableDays:this.availableDays,
+          availableTimes:this.availableSlots
+        }
+        );
+    }
+    else{
+      console.log(this.dayDupCheck)
+      alert('Slot scheduling for this'+this.availableDays+' is already done..')
+    }
+
+    }else{
+      this.dayDupCheck=this.addActor.slots.find(el=>{
+        console.log(el.availableDays);
+        return el.availableDays=='Everyday' || el.availableDays=='Monday to Saturday' || el.availableDays==this.availableDays ;
+      })
+      if(this.dayDupCheck==null){
+        this.addActor.slots.push({
+          availableDays:this.availableDays,
+          availableTimes:this.availableSlots
+        }
+        );
+    }
+    else{
+      console.log(this.dayDupCheck)
+      alert('Slot scheduling for this '+this.availableDays+' is already done..')
+    }
+    }
+   
 }
  console.log(this.addActor.slots)
  this.availableDays='';
@@ -212,6 +239,17 @@ availability(){
 }
 }
 // Availability and Slots
+
+
+// Delete Added slot from Array
+
+Delete(obj){
+  let index=this.addActor.slots.findIndex(el=>{
+    return el.availableDays=obj.availableDays;
+  })
+  this.addActor.slots.splice(index,1);
+}
+// Delete Added slot from Array
 
 // Submit
 submit(form:NgForm){

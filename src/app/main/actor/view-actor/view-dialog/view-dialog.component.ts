@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogData, AddProvider } from '../../actor.model';
-import { environment } from 'environments/environment.prod';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-view-dialog',

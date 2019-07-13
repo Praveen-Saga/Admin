@@ -39,6 +39,7 @@ export class ViewActorComponent implements OnInit {
     phone:null,
     email:null
   }
+  validateObject=[];
   constructor(
     private activatedRoute:ActivatedRoute,
     private router: Router,
@@ -149,36 +150,59 @@ export class ViewActorComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed',result);
+      // Object.keys(result.data).forEach(el=>{
+      //   console.log(el,result.data[el]);
+      //   if(result.data[el]==null || result.data[el]==''){
+      //     this.validateObject.push(el)
+      //   }
+
+      // })
+      // console.log(this.validateObject)
       if(result){
-      let photoTitle=result.data.phone.toString().concat(".jpg")
-      console.log(result.loadedFile)
-      if(result.loadedFile){
-      this.actorServ.imageUpload(photoTitle,result.loadedFile)
-      .subscribe(res=>{
-      console.log(res);
-      this.actorServ.updateProvider(result.data._id,result.data).subscribe(res=>{
-        console.log(res);
-        this.getActorsToTable(this.finding._id)
-      },
-      err=>{
-        console.log(err);
-        alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
-      })
-    },err=>{
-      console.log(err);
-      alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
-    });
-  }else{
-    this.actorServ.updateProvider(result.data._id,result.data).subscribe(res=>{
-      console.log(res);
-      this.getActorsToTable(this.finding._id)
-    },
-    err=>{
-      console.log(err);
-      alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
-    })
-  }
-}
+        if(result.data.slots.length>0){
+          let photoTitle=result.data.phone.toString().concat(".jpg")
+          console.log(result.loadedFile)
+          if(result.loadedFile){
+          this.actorServ.imageUpload(photoTitle,result.loadedFile)
+          .subscribe(res=>{
+            // if(res._id)
+          console.log(res);
+          this.actorServ.updateProvider(result.data._id,result.data).subscribe(res=>{
+            if(res.phone){
+              console.log(res); 
+              this.getActorsToTable(this.finding._id)
+            }else{
+              alert('Please Submit a Valid Form')
+            }
+           
+          },
+          err=>{
+            console.log(err);
+            alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
+          })
+        },err=>{
+          console.log(err);
+          alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
+        });
+      }else{
+        this.actorServ.updateProvider(result.data._id,result.data).subscribe(res=>{
+          if(res.phone){
+            console.log(res); 
+            this.getActorsToTable(this.finding._id)
+          }else{
+            alert('Please Submit a Valid Form')
+          }
+        },
+        err=>{
+          console.log(err);
+          alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
+        })
+      }
+    }else{
+      alert('Please Submit a Valid Form');
+    }
+      }
+  
   });
   }
 // Edit

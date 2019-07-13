@@ -114,7 +114,7 @@
                             <mat-option value='Thursday'>Thursday</mat-option>
                             <mat-option value='Friday'>Friday</mat-option>
                             <mat-option value='Saturday'>Saturday</mat-option>  
-                            <!-- <mat-option value='Monday to Saturday'>Monday to Saturday</mat-option>   -->
+                            <mat-option value='Monday to Saturday'>Monday to Saturday</mat-option>  
                             <mat-option value='Everyday'>Everyday</mat-option>  
                         </mat-select>
                         <!-- <mat-error>Days of Availbility is Required!</mat-error> -->
@@ -123,7 +123,6 @@
                     <mat-label>Availabile Slots</mat-label>     
                     <mat-select placeholder='Availabile Days' name='slots' [(ngModel)]='availableSlots' multiple=true >
                             <mat-option  *ngFor='let slot of slots' [value]='slot.slotValue'>{{slot.fromtime}} to {{slot.totime}}</mat-option>  
-                            
                         </mat-select>
                         <!-- <mat-error>Available slots is Required!</mat-error> -->
             </mat-form-field> 
@@ -139,12 +138,16 @@
                                 <th>Slots</th>
                         </thead>
                         <tbody *ngFor='let dates of addActor.slots' text-center>
-                                <td style="width:50%;">{{dates.availableDays}}</td>
-                                <td style="width:50%;">
+                                <td style="width:45%;">{{dates.availableDays}}</td>
+                                <td style="width:45%;">
                                         <ul>
-                                                <li *ngFor='let slot of dates.availableTimes'>{{slot}}</li>
+                                                <li *ngFor='let slot of dates.availableTimes'>
+                                                        {{slot}}
+                                                        <!-- <span (click)='Delete(dates)'>&times;</span> -->
+                                                </li>
                                         </ul>
                                 </td>
+                                <td style="width:10%;text-align: center;border:none;" class="" (click)='Delete(dates)'>&times;</td>
                         </tbody>
                 </table>
         </div>
@@ -171,8 +174,8 @@
         </div>
         <div class='px-24' fxLayoutAlign="center center" style="margin:auto;text-align: center;" *ngIf='!role || role==""'>
                 <button mat-raised-button color="accent" style="width:200px;margin:auto;" 
-                >Submit</button>
-                <!-- [disabled]="!(addForm.valid) && (addActor.slots!==[])" -->
+                [disabled]="!(addForm.valid) && (addActor.slots!==[])">Submit</button>
+                <!--  -->
         </div>
     </form>
     </div>

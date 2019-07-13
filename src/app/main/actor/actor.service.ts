@@ -5,7 +5,7 @@ import { FuseNavigationService } from '@fuse/components/navigation/navigation.se
 import { navigation } from '../../navigation/navigation'
 import {  Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'environments/environment.hmr';
+import { environment } from 'environments/environment';
 import {  HealthProvider, AddProvider, Qualification, Slots } from './actor.model';
 import { retry } from 'rxjs/operators';
 
@@ -124,7 +124,7 @@ export class ActorService {
 
   // Updating Provider
   updateProvider(id,post){
-    return this.http.put(environment.url+'updateactor/'+id,post)
+    return this.http.put<AddProvider>(environment.url+'updateactor/'+id,post)
   }
   // Updating Provider
 
