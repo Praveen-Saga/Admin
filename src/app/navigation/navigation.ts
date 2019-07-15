@@ -23,30 +23,39 @@ export const navigation: FuseNavigation[] = [
                 //     fg       : '#FFFFFF'
                 // }
             },
-           {
-                id       : 'create-health-provider',
-                title    : 'Create Health Provider',
-                type     : 'item',
-                icon     : 'add',
-                url      : '/actor/create-actor',
-               
-            },
             {
-                id       : 'create-slot',
-                title    : 'Create Slot',
-                type     : 'item',
-                icon     : 'access_time',
-                url      : '/actor/create-slot',
-               
-            },
-            {
-                id       : 'add-qualification',
-                title    : 'Add Qualification',
-                type     : 'item',
-                icon     : 'school',
-                url      : '/actor/add-qualification',
-               
-            },
+                id: 'masters',
+                title: 'Masters',
+                type: 'collapsable',
+                icon: 'layers',
+                children:[
+                    {
+                        id       : 'create-health-provider',
+                        title    : 'Create Health Provider',
+                        type     : 'item',
+                        icon     : 'add',
+                        url      : '/actor/create-actor',
+                       
+                    },
+                    {
+                        id       : 'create-slot',
+                        title    : 'Create Slot',
+                        type     : 'item',
+                        icon     : 'access_time',
+                        url      : '/actor/create-slot',
+                       
+                    },
+                    {
+                        id       : 'add-qualification',
+                        title    : 'Add Qualification',
+                        type     : 'item',
+                        icon     : 'school',
+                        url      : '/actor/add-qualification',
+                       
+                    },
+                  
+                ]
+            }
           
         ],
     },

@@ -11,41 +11,65 @@
                     <mat-error>Name is Required!</mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%" *ngIf='Qualifications.length>0'>
-                    <mat-label>Qualification</mat-label>     
-                    <!-- <input matInput placeholder="Qualification" name="qualification" [(ngModel)]='addActor.qualification' required> -->
-                    <mat-select placeholder="Qualification" name="qualification" [(ngModel)]='addActor.qualification' required>
-                            <mat-option *ngFor='let qualification of Qualifications' [value]='qualification.qualification'>{{qualification.qualification}}</mat-option>
-                    </mat-select>
-                    <mat-error>Qualification is Required!</mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%" *ngIf='loadedActor=="doctor"'>
-                    <mat-label>Speciality</mat-label>     
-                    <mat-select placeholder='Speciality' name="speciality" [(ngModel)]='addActor.speciality' required>
-                        <mat-option value="ALLERGY & IMMUNOLOGY">ALLERGY & IMMUNOLOGY</mat-option>
-                        <mat-option value="ANESTHESIOLOGY">ANESTHESIOLOGY</mat-option>
-                        <mat-option value="DERMATOLOGY">DERMATOLOGY</mat-option>
-                        <mat-option value="DIAGNOSTIC RADIOLOGY">DIAGNOSTIC RADIOLOGY</mat-option>
-                        <mat-option value="EMERGENCY MEDICINE">EMERGENCY MEDICINE</mat-option>
-                        <mat-option value="FAMILY MEDICINE">FAMILY MEDICINE</mat-option>
-                        <mat-option value="INTERNAL MEDICINE">INTERNAL MEDICINE</mat-option>
-                        <mat-option value="MEDICAL GENETICS">MEDICAL GENETICS</mat-option>
-                        <mat-option value="NEUROLOGY">NEUROLOGY</mat-option>
-                        <mat-option value="NUCLEAR MEDICINE">NUCLEAR MEDICINE</mat-option>
-                        <mat-option value="OBSTETRICS AND GYNECOLOGY">OBSTETRICS AND GYNECOLOGY</mat-option>
-                        <mat-option value="OPHTHALMOLOGY">OPHTHALMOLOGY</mat-option>
-                        <mat-option value="PATHOLOGY">PATHOLOGY</mat-option>
-                        <mat-option value="PEDIATRICS">PEDIATRICS</mat-option>
-                        <mat-option value="PHYSICAL MEDICINE & REHABILITATION">PHYSICAL MEDICINE & REHABILITATION</mat-option>
-                        <mat-option value="PREVENTIVE MEDICINE">PREVENTIVE MEDICINE</mat-option>
-                        <mat-option value="PSYCHIATRY">PSYCHIATRY</mat-option>
-                        <mat-option value="RADIATION ONCOLOGY">RADIATION ONCOLOGY</mat-option>
-                        <mat-option value="SURGERY">SURGERY</mat-option>
-                        <mat-option value="UROLOGY">UROLOGY</mat-option>
-                    </mat-select>
-                    <mat-error>Speciality is Required!</mat-error>
-            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                <mat-label>Phone</mat-label>
+                <input matInput type="number"  placeholder="Phone" name="phone" #phone='ngModel'
+                pattern="[0-9]{10}" [(ngModel)]='addActor.phone' required/>
+                <mat-error *ngIf="phone.errors?.required">Phone Number is Required!</mat-error>
+                <mat-error *ngIf="phone.errors?.pattern">Please Enter a Valid Phone Number!</mat-error>
+        </mat-form-field>  
+        <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                        <mat-label>Email</mat-label>
+                <input matInput type="email"  placeholder="Email" name="email" 
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" #email='ngModel' [(ngModel)]='addActor.email' required/>
+                <mat-error *ngIf="email.errors?.required">Email is Required!</mat-error>
+                <mat-error *ngIf="email.errors?.pattern">Please Enter a Valid Email Id!</mat-error>
+        </mat-form-field>   
+
             
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%" *ngIf='Qualifications.length>0'>
+                        <mat-label>Qualification</mat-label>     
+                        <!-- <input matInput placeholder="Qualification" name="qualification" [(ngModel)]='addActor.qualification' required> -->
+                        <mat-select placeholder="Qualification" name="qualification" [(ngModel)]='addActor.qualification' required>
+                                <mat-option *ngFor='let qualification of Qualifications' [value]='qualification.qualification'>{{qualification.qualification}}</mat-option>
+                        </mat-select>
+                        <mat-error>Qualification is Required!</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%" *ngIf='loadedActor=="doctor"'>
+                        <mat-label>Speciality</mat-label>     
+                        <mat-select placeholder='Speciality' name="speciality" [(ngModel)]='addActor.speciality' required>
+                            <mat-option value="ALLERGY & IMMUNOLOGY">ALLERGY & IMMUNOLOGY</mat-option>
+                            <mat-option value="ANESTHESIOLOGY">ANESTHESIOLOGY</mat-option>
+                            <mat-option value="DERMATOLOGY">DERMATOLOGY</mat-option>
+                            <mat-option value="DIAGNOSTIC RADIOLOGY">DIAGNOSTIC RADIOLOGY</mat-option>
+                            <mat-option value="EMERGENCY MEDICINE">EMERGENCY MEDICINE</mat-option>
+                            <mat-option value="FAMILY MEDICINE">FAMILY MEDICINE</mat-option>
+                            <mat-option value="INTERNAL MEDICINE">INTERNAL MEDICINE</mat-option>
+                            <mat-option value="MEDICAL GENETICS">MEDICAL GENETICS</mat-option>
+                            <mat-option value="NEUROLOGY">NEUROLOGY</mat-option>
+                            <mat-option value="NUCLEAR MEDICINE">NUCLEAR MEDICINE</mat-option>
+                            <mat-option value="OBSTETRICS AND GYNECOLOGY">OBSTETRICS AND GYNECOLOGY</mat-option>
+                            <mat-option value="OPHTHALMOLOGY">OPHTHALMOLOGY</mat-option>
+                            <mat-option value="PATHOLOGY">PATHOLOGY</mat-option>
+                            <mat-option value="PEDIATRICS">PEDIATRICS</mat-option>
+                            <mat-option value="PHYSICAL MEDICINE & REHABILITATION">PHYSICAL MEDICINE & REHABILITATION</mat-option>
+                            <mat-option value="PREVENTIVE MEDICINE">PREVENTIVE MEDICINE</mat-option>
+                            <mat-option value="PSYCHIATRY">PSYCHIATRY</mat-option>
+                            <mat-option value="RADIATION ONCOLOGY">RADIATION ONCOLOGY</mat-option>
+                            <mat-option value="SURGERY">SURGERY</mat-option>
+                            <mat-option value="UROLOGY">UROLOGY</mat-option>
+                        </mat-select>
+                        <mat-error>Speciality is Required!</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
+                        <mat-label>Experience(in years)</mat-label>     
+                        <input matInput type="number" min="0" placeholder="Experience" name="Experience" [(ngModel)]='addActor.experience' required>
+                    <mat-error>Experience is Required!</mat-error>                        
+                </mat-form-field>
+                  
         </div>
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                  <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%"
@@ -58,11 +82,7 @@
                         </mat-select>
                     <mat-error>Gender is Required!</mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
-                        <mat-label>Experience(in years)</mat-label>     
-                        <input matInput type="number" min="0" placeholder="Experience" name="Experience" [(ngModel)]='addActor.experience' required>
-                    <mat-error>Experience is Required!</mat-error>                        
-                </mat-form-field>
+               
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%"
                 *ngIf='loadedActor=="doctor" || loadedActor=="nurse"'>
                         <mat-label>Language</mat-label>     
@@ -84,24 +104,9 @@
             </div>
         </div>
         <div fxLayout='column' fxFlex="100" class="pr-12 image-preview" *ngIf='imagePreview!=="" && imagePreview'>
-        <img [src]='imagePreview'>
+        <img [src]='imagePreview' alt="No Image Available">
         </div>
-        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                        <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
-                                <mat-label>Phone</mat-label>
-                                <input matInput type="number"  placeholder="Phone" name="phone" #phone='ngModel'
-                                pattern="[0-9]{10}" [(ngModel)]='addActor.phone' required/>
-                                <mat-error *ngIf="phone.errors?.required">Phone Number is Required!</mat-error>
-                                <mat-error *ngIf="phone.errors?.pattern">Please Enter a Valid Phone Number!</mat-error>
-                        </mat-form-field>  
-                        <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
-                                        <mat-label>Email</mat-label>
-                                <input matInput type="email"  placeholder="Email" name="email" 
-                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" #email='ngModel' [(ngModel)]='addActor.email' required/>
-                                <mat-error *ngIf="email.errors?.required">Email is Required!</mat-error>
-                                <mat-error *ngIf="email.errors?.pattern">Please Enter a Valid Email Id!</mat-error>
-                        </mat-form-field>   
-                </div>
+
         <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
             <div class="h2 pr-12 mb-12" fxFlex="100" style="width: 33%">Availabilty</div>
             <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
@@ -121,7 +126,7 @@
             </mat-form-field> 
             <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                     <mat-label>Availabile Slots</mat-label>     
-                    <mat-select placeholder='Availabile Days' name='slots' [(ngModel)]='availableSlots' multiple=true >
+                    <mat-select placeholder='Availabile Days' name='slots' [(ngModel)]='availableSlots' multiple=true>
                             <mat-option  *ngFor='let slot of slots' [value]='slot.slotValue'>{{slot.fromtime}} to {{slot.totime}}</mat-option>  
                         </mat-select>
                         <!-- <mat-error>Available slots is Required!</mat-error> -->
@@ -174,8 +179,8 @@
         </div>
         <div class='px-24' fxLayoutAlign="center center" style="margin:auto;text-align: center;" *ngIf='!role || role==""'>
                 <button mat-raised-button color="accent" style="width:200px;margin:auto;" 
-                [disabled]="!(addForm.valid) && (addActor.slots!==[])">Submit</button>
-                <!--  -->
+                >Submit</button>
+                <!--[disabled]="!(addForm.valid) && (addActor.slots!==[])"  -->
         </div>
     </form>
     </div>

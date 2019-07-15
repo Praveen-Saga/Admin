@@ -123,9 +123,15 @@
                                       </ng-container>
                               
                                 <!-- Symbol Column -->
-                                <ng-container matColumnDef="experience">
-                                  <th mat-header-cell *matHeaderCellDef>Experience</th>
-                                  <td mat-cell *matCellDef="let element"> {{element.experience}} </td>
+                                <ng-container matColumnDef="status">
+                                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                                  <td mat-cell *matCellDef="let element"> 
+                                          <button mat-raised-button (click)='changeStatus(element)'
+                                           [ngStyle]='{"background-color": element.status==="active" ? "green" : "gray",
+                                                        "color": "white"}'>
+                                                        {{element.status}} 
+                                          </button>
+                                 </td>
                                 </ng-container>
 
 

@@ -10,6 +10,7 @@ import { Board } from './board.model';
 import { navigation } from 'app/navigation/navigation';
 import { HealthProvider } from '../actor/actor.model';
 import { ActorService } from '../actor/actor.service';
+import { FuseNavigation } from '@fuse/types';
 
 @Component({
     selector     : 'scrumboard',
@@ -20,9 +21,9 @@ import { ActorService } from '../actor/actor.service';
 })
 export class ScrumboardComponent implements OnInit, OnDestroy
 {
-    projectBoards: any[];
-    userBoards: any[];
-    alertBoards: any[];
+    projectBoards: FuseNavigation[];
+    userBoards: FuseNavigation[];
+    alertBoards: FuseNavigation[];
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -58,7 +59,7 @@ export class ScrumboardComponent implements OnInit, OnDestroy
         //         this.boards = boards;
         //     });
        
-        this.projectBoards=navigation[0].children;
+        this.projectBoards=navigation[0].children[1].children;
         this.userBoards=navigation[1].children;
         this.alertBoards=navigation[2].children;
         // this.projectBoards.shift();

@@ -9,7 +9,7 @@ import { environment } from 'environments/environment';
   styleUrls: ['./view-dialog.component.scss']
 })
 export class ViewDialogComponent implements OnInit {
-  imagePreview:string;
+  imagePreview:string='';
 
   constructor(
     public dialogRef: MatDialogRef<ViewDialogComponent>,
@@ -18,7 +18,9 @@ export class ViewDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.imagePreview=environment.url+this.data.data.photo;
+    if(this.data.data.photo && this.data.data.photo!== ''){
+      this.imagePreview=environment.url+this.data.data.photo;
+    }
   }
 
   onNoClick(): void {

@@ -16,11 +16,11 @@ export class AuthGuard implements  CanLoad{
 
   }
   canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean{
-    // return true;
-    let isAuth= this.loginServ.getIsAuth();
-    if(!isAuth){
-      this.router.navigateByUrl('/login');
-    }
-    return isAuth;
+    return true;
+    // let isAuth= this.loginServ.getIsAuth();
+    // if(!isAuth){
+    //   this.router.navigateByUrl('/login');
+    // }
+    // return isAuth;
 }
 }

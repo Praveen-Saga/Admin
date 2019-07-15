@@ -18,14 +18,19 @@ export class ActorService {
   roleData:FuseNavigation;
   rolesArr:string[]=['doctor','nurse','medical-store','transport'];
   dupCheck={};
+  subscribeSuccess= new Subject<boolean>()
   constructor(
     private fuseNavServ:FuseNavigationService,
     private http: HttpClient,
     private router: Router
   ) { 
-    
+    this.subscribeSuccess.next(false);
   }
 
+
+  getSubscribeSuccess(){
+    return this.subscribeSuccess.asObservable();
+  }
   // Providers 
   // Getting All Providers
   getAllProviders(){
@@ -34,13 +39,7 @@ export class ActorService {
   // Getting All Providers
   // Adding Provider Master 
   addProvider(post){
-    this.http.post<AddProvider>(environment.url+'addactor',post).subscribe(res=>{
-      console.log(res);
-    },  
-    err=>{
-      this.errHandler(err)
-
-    })
+    return this.http.post<AddProvider>(environment.url+'addactor',post)
   }
   // Adding Provider Master 
  
@@ -149,6 +148,7 @@ export class ActorService {
     if(this.dupCheck==null){
     this.http.post<HealthProvider>(environment.url+'providers',{providerName: myrole}).subscribe((res)=>{
       console.log(res);
+      this.subscribeSuccess.next(true);
       let myTitle=res.providerName.toLowerCase().replace("-"," ")
               .split(' ')
               .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
@@ -159,6 +159,9 @@ export class ActorService {
                 title:myTitle,
                 type:'collapsable',
                 icon: '',
+                badge:{
+                  count:0,
+                },
                 children:[
                     {
                         id:'add',
@@ -176,7 +179,7 @@ export class ActorService {
             },
             ));
     this.dupCheck={};
-    this.router.navigateByUrl('/actor/add/'+res.providerName)
+    // this.router.navigateByUrl('/actor/add/'+res.providerName)
     },
     err=>{
      this.errHandler(err);

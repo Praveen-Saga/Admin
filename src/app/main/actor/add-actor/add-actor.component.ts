@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { navigation } from 'app/navigation/navigation';
 import { AddProvider,  HealthProvider, Qualification, Slots } from '../actor.model';
 import { ActorService } from '../actor.service';
 
 import { NgForm } from '@angular/forms';
+import { Subscription, ObjectUnsubscribedError, empty } from 'rxjs';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { NgForm } from '@angular/forms';
   templateUrl: './add-actor.component.html',
   styleUrls: ['./add-actor.component.scss']
 })
-export class AddActorComponent implements OnInit {
+export class AddActorComponent implements OnInit,OnDestroy {
   @ViewChild("myFilePicker",{static: true}) filePickerRef: ElementRef;
 
   latitude:number;
@@ -28,6 +29,7 @@ export class AddActorComponent implements OnInit {
   dayDupCheck: any;
   imagePreview: string;
   finding: HealthProvider;
+  routerSub: Subscription;
   @Input() editData:AddProvider;
   @Output() filePicker = new EventEmitter()
   Qualifications:Qualification[]=[];
@@ -35,6 +37,7 @@ export class AddActorComponent implements OnInit {
   addActor: AddProvider={
     providerId: '',
     name: '',
+    // status: 'inactive',
     qualification: '',
     speciality: '',
     experience: null,
@@ -130,18 +133,48 @@ export class AddActorComponent implements OnInit {
         this.addActor.longitude=pos.coords.longitude;
       },
       err=>{
-        alert('Getting Current Position Automatically Failed...'+err)
+        alert('Getting Current Position Automatically Failed... \n'+err)
       },
       {
         timeout:10000
       }
       )
     }
-    // else{
-    //   alert('Getting Current Position Automatically Failed...!');
-    // }
-  }
 // Geolocator
+  //  Navigating Away From the page
+  
+  
+ this.routerSub=this.router.events.subscribe(event=>{
+   if(event instanceof NavigationStart){
+     let formEmptyCheck=0;
+    Object.keys(this.addActor).forEach(k=>{
+      if(this.addActor[k]!==this.addActor.latitude && this.addActor[k]!==this.addActor.longitude){
+        if(this.addActor[k]!==null && this.addActor[k]!==''  && this.addActor[k].length>0){
+          formEmptyCheck++;
+          console.log(k,this.addActor[k],formEmptyCheck);
+  
+        }
+      }
+     
+    })
+    if(this.loadedFile && this.loadedFile!==null){
+      formEmptyCheck++
+      console.log(formEmptyCheck,this.loadedFile)
+    }
+    if(formEmptyCheck>0){
+      let autoSave=confirm('Do You Want to Save your data');
+    if(autoSave){
+        this.submit();
+    }
+    else{
+      return;
+    }
+    }
+   }
+ })
+
+  //  Navigating Away From the page 
+  }
 
 // ImagePicker and file preview
   imagePicked( event){
@@ -252,18 +285,44 @@ Delete(obj){
 // Delete Added slot from Array
 
 // Submit
-submit(form:NgForm){
+submit(form?:NgForm){
   // console.log(this.addActor)
+  if(this.addActor.name && this.addActor.email && this.addActor.phone
+    && this.addActor.name!=="" 
+    && this.addActor.email!==""
+    ){
   if(this.loadedFile){
   let photoTitle=this.addActor.phone.toString().concat(".jpg")
   this.actorServ.imageUpload(photoTitle,this.loadedFile)
   .subscribe(res=>{
       console.log(res);
       this.addActor.providerId=this.finding._id;
-      this.addActor.photo="download/"+photoTitle
+      this.addActor.photo="download/"+photoTitle;
+      if(this.addActor.slots.length>0){
+        this.addActor.status='active'
+      }else{
+        this.addActor.status='inactive'
+      }
       console.log(this.addActor);
-      this.actorServ.addProvider(this.addActor);
-      form.resetForm();
+      this.actorServ.addProvider(this.addActor).subscribe(res=>{
+        console.log(res);
+        if(!form){
+          Object.keys(this.addActor).forEach(k=>this.addActor[k]=null);
+        }else{
+          form.resetForm();
+        }
+        this.addActor.slots=[];
+       this.filePickerRef.nativeElement.value=""
+       this.imagePreview="";
+      },  
+      err=>{
+        this.actorServ.errHandler(err)
+      });
+if(!form){
+  Object.keys(this.addActor).forEach(k=>this.addActor[k]=null);
+}else{
+  form.resetForm();
+}
       this.addActor.slots=[];
     this.filePickerRef.nativeElement.value=""
     this.imagePreview="";
@@ -272,13 +331,44 @@ submit(form:NgForm){
     this.actorServ.errHandler(err)
   });
   console.log(this.addActor.phone.toString().concat(".jpg"));
+}else{
   
+ 
+      this.addActor.providerId=this.finding._id;
+      if(this.addActor.slots.length>0){
+        this.addActor.status='active'
+      }else{
+        this.addActor.status='inactive'
+
+      }
+      console.log(this.addActor);
+      this.actorServ.addProvider(this.addActor).subscribe(res=>{
+        console.log(res);
+        if(!form){
+          Object.keys(this.addActor).forEach(k=>this.addActor[k]=null);
+        }else{
+          form.resetForm();
+        }
+        this.addActor.slots=[];
+       this.filePickerRef.nativeElement.value=""
+       this.imagePreview="";
+      },  
+      err=>{
+        this.actorServ.errHandler(err)
+      });
+
+  }
+  // alert('Please upload Photo..!')
  
 
 }else{
-  alert('Please upload Photo..!')
+  alert('Please Enter Name, Phone Number and Email Id to use this Feature...')
+  this.router.navigateByUrl(this.router.url,{replaceUrl:true})
 }
 }
 // Submit
 
+ngOnDestroy(){
+  this.routerSub.unsubscribe();
+}
 }

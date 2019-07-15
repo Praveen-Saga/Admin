@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
 import { LoginService } from './login.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector     : 'login',
@@ -12,9 +13,11 @@ import { LoginService } from './login.service';
     encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations
 })
-export class LoginComponent implements OnInit
+export class LoginComponent implements OnInit,OnDestroy
 {
     loginForm: FormGroup;
+    isLoading:boolean=false;
+    loginSub: Subscription;
 
     /**
      * Constructor
@@ -60,8 +63,17 @@ export class LoginComponent implements OnInit
             email   : ['', [Validators.required, Validators.email]],
             password: ['', Validators.required]
         });
+
+        this.loginSub=this.loginServ.getIsLoading().subscribe(res=>{
+            console.log(res);
+            this.isLoading=res;
+            console.log(this.isLoading);
+        })
     }
 
+    ngOnDestroy(){
+        this.loginSub.unsubscribe();
+    }
     submit(){
         console.log(typeof this.loginForm.value);
         this.loginServ.login(this.loginForm.value)

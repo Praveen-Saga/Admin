@@ -27,7 +27,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./view-actor.component.scss']
 })
 export class ViewActorComponent implements OnInit {
-  displayedColumns: string[] = [ 'name',  'email','phone','experience','view','edit','delete'];
+  displayedColumns: string[] = [ 'name',  'email','phone','status','view','edit','delete'];
   dataSource;
   //  = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   loadedActor: string;
@@ -159,7 +159,6 @@ export class ViewActorComponent implements OnInit {
       // })
       // console.log(this.validateObject)
       if(result){
-        if(result.data.slots.length>0){
           let photoTitle=result.data.phone.toString().concat(".jpg")
           console.log(result.loadedFile)
           if(result.loadedFile){
@@ -167,6 +166,11 @@ export class ViewActorComponent implements OnInit {
           .subscribe(res=>{
             // if(res._id)
           console.log(res);
+        if(result.data.slots.length>0){
+          result.data.status='active';
+        }else{
+          result.data.status='inactive';
+        }
           this.actorServ.updateProvider(result.data._id,result.data).subscribe(res=>{
             if(res.phone){
               console.log(res); 
@@ -184,7 +188,13 @@ export class ViewActorComponent implements OnInit {
           console.log(err);
           alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
         });
-      }else{
+      }
+      else{
+        if(result.data.slots.length>0){
+          result.data.status='active';
+        }else{
+          result.data.status='inactive';
+        }
         this.actorServ.updateProvider(result.data._id,result.data).subscribe(res=>{
           if(res.phone){
             console.log(res); 
@@ -203,7 +213,7 @@ export class ViewActorComponent implements OnInit {
     }
       }
   
-  });
+  );
   }
 // Edit
 
@@ -223,4 +233,30 @@ export class ViewActorComponent implements OnInit {
   }
 // View
 
+// Changing Status
+
+changeStatus(element){
+ 
+  if(element.slots.length>0){
+    if(element.status=='active'){
+      element.status='inactive';
+    }else{
+      element.status='active'
+    }
+    this.actorServ.updateProvider(element._id,element).subscribe(res=>{
+      if(res.phone){
+        console.log(res); 
+        this.getActorsToTable(this.finding._id)
+      }else{
+        alert('Please Submit a Valid Form')
+      }
+    },
+    err=>{
+      console.log(err);
+      alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
+    })
+  }else{
+    alert('Please add availability');
+  }
+}
 }

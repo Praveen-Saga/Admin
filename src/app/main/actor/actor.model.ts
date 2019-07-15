@@ -1,5 +1,6 @@
 export interface HealthProvider{
     _id:string;
+    status?: 'active' | 'inactive'  
     providerName:string;
 }
 
@@ -22,6 +23,7 @@ export interface PeriodicElement {
   export interface AddProvider{
     providerId: string;
     _id?:string;
+    status?: 'active' | 'inactive'
     name: string;
     qualification: string;
     speciality: string;
@@ -57,11 +59,13 @@ export interface PeriodicElement {
 
   export interface Qualification{
     _id?:string,
+    status?: 'active' | 'inactive'
     providerId:string;
     qualification:string;
   } 
   export interface Slots{
-    _id?:string,
+    _id?:string;
+    status?: 'active' | 'inactive'
     fromtime:string;
     totime:string;
     slotValue?:string;
