@@ -50,7 +50,9 @@
                         [disabled]="loginForm.invalid" (click)="submit()" *ngIf='!isLoading'>
                     LOGIN
                 </button>
-                <mat-spinner *ngIf='isLoading' value=50 style="text-align: center;"></mat-spinner>
+                <div class="submit-button" style="width:70px;">
+                    <mat-spinner *ngIf='isLoading' value=50 diameter=50></mat-spinner>
+                </div>
 
             </form>
 

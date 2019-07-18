@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { navigation } from 'app/navigation/navigation';
 import { AddProvider,  HealthProvider, Qualification, Slots } from '../actor.model';
 import { ActorService } from '../actor.service';
@@ -34,6 +34,7 @@ export class AddActorComponent implements OnInit,OnDestroy {
   @Output() filePicker = new EventEmitter()
   Qualifications:Qualification[]=[];
   slots:Slots[]=[];
+  isLoading:boolean=false;  //IS LOADING CHECK......
   addActor: AddProvider={
     providerId: '',
     name: '',
@@ -88,23 +89,7 @@ export class AddActorComponent implements OnInit,OnDestroy {
   // Identifying for which provider add Page belongs
 
 // Getting Qualifications of Providers
-    this.actorServ.getAllProviders().subscribe(res=>{
-      console.log(res);
-      this.finding=res.find(el=>{
-        return el.providerName==this.loadedActor
-      })
-      console.log(this.finding,this.finding._id)
-      this.actorServ.getQualifications(this.finding._id).subscribe(res=>{
-        console.log(res);
-        this.Qualifications=res;
-      },
-      err=>{
-        this.actorServ.errHandler(err);
-      })
-    },
-    err=>{
-     this.actorServ.errHandler(err);
-    })
+    this.getActorQualifications();
 // Getting Qualifications of Providers
 
 // Getting Slots
@@ -171,9 +156,35 @@ export class AddActorComponent implements OnInit,OnDestroy {
     }
     }
    }
+   if(event instanceof NavigationEnd){
+     this.getActorQualifications();
+   }
  })
 
   //  Navigating Away From the page 
+  }
+
+
+  // Get Actor Qualifications
+
+  getActorQualifications(){
+    this.actorServ.getAllProviders().subscribe(res=>{
+      console.log(res);
+      this.finding=res.find(el=>{
+        return el.providerName==this.loadedActor
+      })
+      console.log(this.finding,this.finding._id)
+      this.actorServ.getQualifications(this.finding._id).subscribe(res=>{
+        console.log(res);
+        this.Qualifications=res;
+      },
+      err=>{
+        this.actorServ.errHandler(err);
+      })
+    },
+    err=>{
+     this.actorServ.errHandler(err);
+    })
   }
 
 // ImagePicker and file preview
@@ -287,14 +298,29 @@ Delete(obj){
 // Submit
 submit(form?:NgForm){
   // console.log(this.addActor)
+  // if(form){
+  //   form.name
+  // }
+  let phoneCheck=false;
+  if(this.addActor.phone){
+    phoneCheck=/^\d{10}$/.test(this.addActor.phone.toString())
+  }
+  console.log(phoneCheck,
+  /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(this.addActor.email),
+  /^[a-zA-z]+$/.test(this.addActor.name));
   if(this.addActor.name && this.addActor.email && this.addActor.phone
     && this.addActor.name!=="" 
     && this.addActor.email!==""
+    && phoneCheck
+    &&/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(this.addActor.email)
+    &&/^[a-zA-Z ]*$/.test(this.addActor.name)
     ){
+      this.isLoading=true;
   if(this.loadedFile){
   let photoTitle=this.addActor.phone.toString().concat(".jpg")
   this.actorServ.imageUpload(photoTitle,this.loadedFile)
   .subscribe(res=>{
+    this.isLoading=false;
       console.log(res);
       this.addActor.providerId=this.finding._id;
       this.addActor.photo="download/"+photoTitle;
@@ -306,14 +332,20 @@ submit(form?:NgForm){
       console.log(this.addActor);
       this.actorServ.addProvider(this.addActor).subscribe(res=>{
         console.log(res);
-        if(!form){
-          Object.keys(this.addActor).forEach(k=>this.addActor[k]=null);
+        if(res.phone){
+          alert('New '+this.loadedActor+" Added..")
+          if(!form){
+            Object.keys(this.addActor).forEach(k=>this.addActor[k]=null);
+          }else{
+            form.resetForm();
+          }
+          this.addActor.slots=[];
+         this.filePickerRef.nativeElement.value=""
+         this.imagePreview="";
         }else{
-          form.resetForm();
+          this.actorServ.errHandler(res);
+          this.router.navigateByUrl(this.router.url,{replaceUrl:true})
         }
-        this.addActor.slots=[];
-       this.filePickerRef.nativeElement.value=""
-       this.imagePreview="";
       },  
       err=>{
         this.actorServ.errHandler(err)
@@ -328,6 +360,7 @@ if(!form){
     this.imagePreview="";
   },
   err=>{
+    this.isLoading=false;
     this.actorServ.errHandler(err)
   });
   console.log(this.addActor.phone.toString().concat(".jpg"));
@@ -344,6 +377,7 @@ if(!form){
       console.log(this.addActor);
       this.actorServ.addProvider(this.addActor).subscribe(res=>{
         console.log(res);
+        this.isLoading=false;
         if(!form){
           Object.keys(this.addActor).forEach(k=>this.addActor[k]=null);
         }else{
@@ -354,6 +388,7 @@ if(!form){
        this.imagePreview="";
       },  
       err=>{
+        this.isLoading=false;
         this.actorServ.errHandler(err)
       });
 

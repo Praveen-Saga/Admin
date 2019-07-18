@@ -159,10 +159,21 @@ export class AppComponent implements OnInit, OnDestroy
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
            });
           
-           this.actorServ.getAllProviders().pipe(retryWhen(_ => {
+         this.getMastersToApp();
+         this.actorServ.getMasterSubscribeSuccess().subscribe(res=>{
+             if(res){
+                 this.getMastersToApp();
+             }
+         })
+    }
+
+
+    getMastersToApp(){
+        this.actorServ.getAllProviders().pipe(retryWhen(_ => {
             return interval(5000)
           })).subscribe(res=>{
             console.log(res);
+            navigation[1].children.length=0;
             res.forEach(el=>{
                 let myUrl=el.providerName.toLowerCase();
               let myTitle=el.providerName.toLowerCase().replace("-"," ")
@@ -198,7 +209,7 @@ export class AppComponent implements OnInit, OnDestroy
               ))
 
               },err=>{
-                  console.log(res)
+                  console.log(err)
               })
 
             })

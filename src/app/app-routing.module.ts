@@ -46,6 +46,21 @@ const routes: Routes = [
     loadChildren: './main/push-notifications/push-notifications.module#PushNotificationsModule' ,
     canLoad:[AuthGuard]
   },
+  { 
+    path: 'news', 
+    loadChildren: './main/news/news.module#NewsModule' ,
+    canLoad:[AuthGuard]
+  },
+  { 
+    path: 'faqs', 
+    loadChildren: './main/faqs/faqs.module#FaqsModule' ,
+    canLoad:[AuthGuard]
+  },
+  { 
+    path: 'feedback', 
+    loadChildren: './main/feedback/feedback.module#FeedbackModule' ,
+    canLoad:[AuthGuard]
+  },
   {
     path:'',
     redirectTo:'dashboard',

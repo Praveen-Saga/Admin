@@ -31,7 +31,7 @@ export const navigation: FuseNavigation[] = [
                 children:[
                     {
                         id       : 'create-health-provider',
-                        title    : 'Create Health Provider',
+                        title    : 'Health Providers Master',
                         type     : 'item',
                         icon     : 'add',
                         url      : '/actor/create-actor',
@@ -39,7 +39,7 @@ export const navigation: FuseNavigation[] = [
                     },
                     {
                         id       : 'create-slot',
-                        title    : 'Create Slot',
+                        title    : 'Slots Master',
                         type     : 'item',
                         icon     : 'access_time',
                         url      : '/actor/create-slot',
@@ -47,7 +47,7 @@ export const navigation: FuseNavigation[] = [
                     },
                     {
                         id       : 'add-qualification',
-                        title    : 'Add Qualification',
+                        title    : 'Qualifications Master',
                         type     : 'item',
                         icon     : 'school',
                         url      : '/actor/add-qualification',
@@ -173,6 +173,27 @@ export const navigation: FuseNavigation[] = [
                 type     : 'item',
                 icon     : 'sms',
                 url      : '/push-notifications',
+             },
+             {
+                id       : 'news',
+                title    : 'News',
+                type     : 'item',
+                icon     : 'markunread',
+                url      : '/news',
+             },
+             {
+                id       : 'feedback',
+                title    : 'Feedback',
+                type     : 'item',
+                icon     : 'feedback',
+                url      : '/feedback',
+             },
+             {
+                id       : 'faqs',
+                title    : 'FAQs',
+                type     : 'item',
+                icon     : 'forum',
+                url      : '/faqs',
              },
         ]
     }

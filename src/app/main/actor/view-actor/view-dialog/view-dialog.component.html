@@ -1,49 +1,62 @@
-<div mat-dialog-content class='h2'  >
-        <!-- style='text-align:center' -->
-  <!-- This is the View Dialog Component...! -->
-  <div fxLayout='row' fxFlex="1 0 auto" class="pr-12 mb-24"  >
+<div mat-dialog-content >
+        <!-- <div  > -->
+                <div class="h1 m-24" style="text-align:center">{{data.data.name.toUpperCase()}} DETAILS</div>
+                <table class="h3 table" style="width:100% !important; text-align: left">
+                        <tr>
+                                <th style="width:20%;">Image</th>
+                                <th>General Details</th>
+                                <th>Availability Details</th>
+                                <th>Contact Details</th>
+                        </tr>
+                        <tr>
+                        <td class="image"><img [src]="imagePreview"/></td>
+                    <td>
+                        <mat-label><b> Qualification: </b>{{data.data.qualification}}</mat-label><br/>
+                        <mat-label><b> Experience: </b>{{data.data.experience}}</mat-label><br/>
+                        <mat-label><b> Speciality: </b>{{data.data.speciality}}</mat-label><br/>
+                        <mat-label><b> Gender: </b>{{data.data.gender}}</mat-label><br/>
+                        <mat-label><b> Languages: </b><br/>
+                        <mat-label *ngFor='let speak of data.data.language '>{{speak}}<br/></mat-label>
+                        </mat-label>
+                    </td>
 
-        <div fxLayout='column' fxFlex="100" style="width: 50%;float: left;margin-top: 2rem;">
-                <mat-label class="h1" style="display:block;">Name: {{data.data.name}}</mat-label>
-                <mat-label class="h1" style="display:block;">Qualification: {{data.data.qualification}}</mat-label>
-                <mat-label class="h1" style="display:block;">experience: {{data.data.experience}}</mat-label>
-                <mat-label class="h1" style="display:block;">Speciality: {{data.data.speciality}}</mat-label>
-                <mat-label class="h1" style="display:block;">Gender: {{data.data.gender}}</mat-label>
-                <mat-label class="h1" style="display:block;">Phone: {{data.data.phone}}</mat-label>
-                <mat-label class="h1" style="display:block;">Email-Id: {{data.data.email}}</mat-label>
+                     <td>
+                        <mat-label *ngFor='let date of data.data.slots'>
+                                <mat-label><b>{{date.availableDays}}</b></mat-label><br/>
+                                <mat-label *ngFor='let time of date.availableTimes'>{{time}}<br/></mat-label>
+                        </mat-label>
+                    </td>
 
+                     <td>
+                        <mat-label><b>Phone: </b> {{data.data.phone}}</mat-label><br/>
+                        <mat-label><b>Email: </b>{{data.data.email}}</mat-label><br/>
+                        <mat-label><b>Location: </b></mat-label><br/>
+                        <mat-label>{{data.data.latitude}} latitude</mat-label><br/>
+                        <mat-label> {{data.data.longitude}} longitude</mat-label><br/>
+                        <mat-label><b>Address: </b> </mat-label><br/>
+                        <mat-label>{{data.data.address}}</mat-label>
+                    </td>
+               
+                <!-- <div class="h2 m-24" style="text-align:center">Availability Details:</div>
+                <tr *ngFor='let date of data.data.slots'>
+                        <th class="th">{{date.availableDays}}</th>
+                        <td class="td" *ngFor='let time of date.availableTimes'>{{time}} </td> 
+                </tr>
 
-        </div>
-        <div fxLayout='column' fxFlex="100" fxLayoutAlign="center center" class="image-preview"  
-        style="width:30%;height:23rem;margin:2rem 3rem;box-sizing: border-box; float: left;" >
-                 <img [src]='imagePreview' alt='No Image Available' style="width: 100%;">
-        </div>
-  </div>
- <div fxLayout="column" fxLayoutAlign="start center" fxFlex="1 0 auto" class="my-12" style="width:100%;float: none">
-         <!-- <div fxLayout="row"> <mat-label class="mat-label pr-12">Phone: {{data.data.phone}}</mat-label> <mat-label class="mat-label">Email-Id: {{data.data.email}}</mat-label></div> -->
-                <!-- <mat-label class="h1" style="display:block;">Email-Id: {{data.data.email}}</mat-label> -->
-                <mat-label class="h1" style="display:block;">Location: {{data.data.latitude}}latitude {{data.data.longitude}}longitude </mat-label>
-                <mat-label class="h1" style="display:block;">Address: {{data.data.address}}</mat-label>
- </div>
-
- <div fxLayout="column" fxLayoutAlign="start center" fxFlex="1 1 auto" class="mb-12"
-        *ngIf="!data.data.slots.length==0" style="float: none;display: block">
-        <mat-label class="h1" style="display:block;">Availability:</mat-label>
-                <table fxFlex="100" class="pr-12" style="width: 100%;text-align: center">
-                        <thead><th>Days</th><th>Slots</th></thead>
-                        <tbody *ngFor='let dates of data.data.slots' text-center>
-                                <td style="width:50%;">{{dates.availableDays}}</td>
-                                <td style="width:50%;">
-                                        <ul>
-                                                <li *ngFor='let slot of dates.availableTimes'>{{slot}}</li>
-                                        </ul>
-                                </td>
-                        </tbody>
+                <div class="h2 m-24" style="text-align:center">Contact Details:</div>
+                <tr><th class="th">Phone:</th><td class="td">{{data.data.phone}} </td> </tr>
+                <tr><th class="th">Email:</th><td class="td">{{data.data.email}} </td> </tr>
+                <tr><th class="th">Location:</th><td class="td">{{data.data.latitude}} {{data.data.longitude}} </td> </tr>
+                <tr><th class="th">Address:</th><td class="td">{{data.data.address}} </td> </tr> -->
+               
+                               
+        </tr>
+                    
                 </table>
-        </div>
+        <!-- </div> -->
 </div>
 
-<div mat-dialog-actions style="margin:auto;float:right">
+<div mat-dialog-actions style="margin:auto;text-align: center;float: right">
   <button mat-stroked-button (click)="onNoClick()">Close</button>
   <!-- <button mat-stroked-button color='warn' class='ok' [mat-dialog-close]="true" cdkFocusInitial>Ok</button> -->
 </div>

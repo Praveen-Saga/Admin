@@ -61,6 +61,7 @@ export interface PeriodicElement {
     _id?:string,
     status?: 'active' | 'inactive'
     providerId:string;
+    providerName?:string;
     qualification:string;
   } 
   export interface Slots{

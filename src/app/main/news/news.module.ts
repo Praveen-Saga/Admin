@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
-import { DashboardComponent } from './dashboard.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { NewsComponent } from './news.component';
 
 const routes = [
     {
         path     : '',
-        component:DashboardComponent
+        component:NewsComponent
         
     },  
 ];
 
 @NgModule({
     declarations: [
-        DashboardComponent,
+        NewsComponent  ,
       
     ],
     imports     : [
@@ -21,11 +21,11 @@ const routes = [
         FormsModule,
     ],
     exports:[
-        DashboardComponent,
+        NewsComponent,
        
     ]
    
 })
-export class DashBoardModule
+export class NewsModule
 {
 }

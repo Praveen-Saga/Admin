@@ -10,6 +10,8 @@ import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 import { ViewDialogComponent } from './view-dialog/view-dialog.component';
 import { ActorService } from '../actor.service';
 import { NgForm } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 
 
 
@@ -27,13 +29,17 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./view-actor.component.scss']
 })
 export class ViewActorComponent implements OnInit {
-  displayedColumns: string[] = [ 'name',  'email','phone','status','view','edit','delete'];
+  displayedColumns: string[] = [ 'position','name',  'email','phone','status','view','edit'];  //,'delete'
   dataSource;
+  @ViewChild('searchForm',{static:true})form:NgForm;
   //  = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   loadedActor: string;
   title: string;
   dupCheck: any;
   finding: HealthProvider;
+  providerList:AddProvider[]=[];
+  filteredOptions: Observable<AddProvider[]>;
+  isLoading:boolean=false;
   search: SearchPage={
     name:null,
     phone:null,
@@ -83,34 +89,79 @@ export class ViewActorComponent implements OnInit {
         this.getActorsToTable(this.finding._id);
       })
      })
-  }
     // getting Providers and actor wise list
+
+   
+  }
  
 
 // Search
   sendSearchData(form: NgForm){
+    this.isLoading=true;
     console.log(this.search);
     if(this.search.phone==null && this.search.name==null && this.search.email==null){
       this.getActorsToTable(this.finding._id);
     }else{
     this.actorServ.searchAmongProviders(this.search).subscribe(res=>{
+      this.isLoading=false;
       console.log(res);
       this.dataSource = new MatTableDataSource<AddProvider>(res);
       this.dataSource.paginator = this.paginator;
     },
     err=>{
+      this.isLoading=false;
       console.log(err);
       alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
     })
     form.resetForm();
   }
+
+
+  // AutoComplete
+
   }
+
+  private _filter(value: AddProvider): AddProvider[] {
+    if(value.name){
+      const filterValue = value.name.toLowerCase();
+    // console.log(this.dataSource)
+    return this.providerList.filter(option => option.name.toLowerCase().includes(filterValue));
+    }
+
+    if(value.phone){
+      const filterValue = value.phone.toString()
+    // console.log(this.dataSource)
+    return this.providerList.filter(option => option.phone.toString().includes(filterValue));
+    }
+
+    if(value.email){
+      const filterValue = value.email.toLowerCase();
+    // console.log(this.dataSource)
+    return this.providerList.filter(option => option.email.toLowerCase().includes(filterValue));
+    }
+    
+  }
+
+
   getActorsToTable(id){
+    this.isLoading=true;
     this.actorServ.getProviderList(id).subscribe(res=>{
+      this.isLoading=false;
       console.log(res);
      this.dataSource = new MatTableDataSource<AddProvider>(res);
-     this.dataSource.paginator = this.paginator;  },
+     this.dataSource.paginator = this.paginator;
+     this.providerList=res; 
+      //  AutoComplete
+    // console.log(this.form);
+    this.filteredOptions = this.form.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+      // console.log(this.filteredOptions)
+     },
      err=>{
+       this.isLoading=false;
       console.log(err);
       alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
     })
@@ -166,11 +217,14 @@ export class ViewActorComponent implements OnInit {
           .subscribe(res=>{
             // if(res._id)
           console.log(res);
+          result.data.providerId=this.finding._id;
+          result.data.photo="download/"+photoTitle;
         if(result.data.slots.length>0){
           result.data.status='active';
         }else{
           result.data.status='inactive';
         }
+        console.log(result.data)
           this.actorServ.updateProvider(result.data._id,result.data).subscribe(res=>{
             if(res.phone){
               console.log(res); 
@@ -222,7 +276,8 @@ export class ViewActorComponent implements OnInit {
     console.log(element.phone);
 
     const dialogRef = this.dialog.open(ViewDialogComponent, {
-      width: '50%',
+      width: '75%',
+      // height:'50%',
       data: {data:element,role:this.loadedActor}
      
     });

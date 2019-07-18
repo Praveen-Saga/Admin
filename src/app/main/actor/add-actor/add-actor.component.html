@@ -86,11 +86,15 @@
                 <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%"
                 *ngIf='loadedActor=="doctor" || loadedActor=="nurse"'>
                         <mat-label>Language</mat-label>     
-                        <mat-select placeholder='Language' name="language" [(ngModel)]='addActor.language' required>
+                        <mat-select placeholder='Language' name="language" [(ngModel)]='addActor.language'
+                        multiple=true required>
                                 <mat-option value='Telugu'>Telugu</mat-option>
                                 <mat-option value='English'>English</mat-option>
                                 <mat-option value='Hindi'>Hindi</mat-option>
-                                <mat-option value='Other'>Other</mat-option>
+                                <mat-option value='Hindi'>Tamil</mat-option>
+                                <mat-option value='Hindi'>Malayalam</mat-option>
+                                <mat-option value='Hindi'>Kannada</mat-option>
+                                <!-- <mat-option value='Other'>Other</mat-option> -->
                             </mat-select>
                          <mat-error>Language is Required!</mat-error>
                 </mat-form-field>
@@ -111,7 +115,7 @@
             <div class="h2 pr-12 mb-12" fxFlex="100" style="width: 33%">Availabilty</div>
             <mat-form-field appearance="outline" fxFlex="100" class="pr-12" style="width:33%">
                     <mat-label>Availabile Days</mat-label>     
-                    <mat-select placeholder='Availabile Days' name='days' [(ngModel)]='availableDays' >
+                    <mat-select placeholder='Availabile Days' name='days' [(ngModel)]='availableDays'>
                             <mat-option value='Sunday'>Sunday</mat-option>
                             <mat-option value='Monday'>Monday</mat-option>
                             <mat-option value='Tuesday'>Tuesday</mat-option>
@@ -178,9 +182,11 @@
                 </mat-form-field>
         </div>
         <div class='px-24' fxLayoutAlign="center center" style="margin:auto;text-align: center;" *ngIf='!role || role==""'>
-                <button mat-raised-button color="accent" style="width:200px;margin:auto;" 
-                >Submit</button>
-                <!--[disabled]="!(addForm.valid) && (addActor.slots!==[])"  -->
+                <button mat-raised-button color="accent" style="width:200px;margin:auto;text-align: center" 
+                [disabled]="!(addForm.valid) && (addActor.slots!==[])" *ngIf='!isLoading'>Submit</button>
+                <mat-spinner *ngIf='isLoading' class="p-24" style="margin: auto;" value=100 diameter=50></mat-spinner>
+
+                <!--  -->
         </div>
     </form>
     </div>

@@ -5,7 +5,8 @@ import { ViewActorComponent } from './view-actor/view-actor.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
-import { MatButtonModule, MatTableModule, MatIconModule, MatPaginatorModule } from '@angular/material';
+import { MatButtonModule, MatTableModule, MatIconModule, MatPaginatorModule,MatAutocompleteModule, 
+   MatProgressSpinnerModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { CreateActorComponent } from './create-actor/create-actor.component';
 import { CreateSlotComponent } from './create-slot/create-slot.component';
@@ -26,7 +27,9 @@ const Material=[
     MatTableModule,
     MatIconModule,
     MatPaginatorModule,
-    MatDialogModule
+    MatDialogModule,
+    MatAutocompleteModule,
+    MatProgressSpinnerModule
 ]
 
 const routes = [
