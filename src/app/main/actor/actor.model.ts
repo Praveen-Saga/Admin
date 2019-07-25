@@ -72,3 +72,16 @@ export interface PeriodicElement {
     slotValue?:string;
   }
 
+  export interface Appointment{
+    _id:string,
+    patientId:string,
+    patientname:string,
+    address:string,
+    doctorname:string,
+    doctorId:string,
+    pickedslots:[{
+      day:string,
+      time:string,
+    }]
+  }
+

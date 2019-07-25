@@ -342,6 +342,7 @@ submit(form?:NgForm){
           this.addActor.slots=[];
          this.filePickerRef.nativeElement.value=""
          this.imagePreview="";
+         this.loadedFile
         }else{
           this.actorServ.errHandler(res);
           this.router.navigateByUrl(this.router.url,{replaceUrl:true})
@@ -350,14 +351,16 @@ submit(form?:NgForm){
       err=>{
         this.actorServ.errHandler(err)
       });
-if(!form){
   Object.keys(this.addActor).forEach(k=>this.addActor[k]=null);
-}else{
+// }else{
+if(form){
+
   form.resetForm();
 }
       this.addActor.slots=[];
     this.filePickerRef.nativeElement.value=""
     this.imagePreview="";
+    this.loadedFile=null;
   },
   err=>{
     this.isLoading=false;
@@ -378,9 +381,9 @@ if(!form){
       this.actorServ.addProvider(this.addActor).subscribe(res=>{
         console.log(res);
         this.isLoading=false;
-        if(!form){
           Object.keys(this.addActor).forEach(k=>this.addActor[k]=null);
-        }else{
+        // }else{
+        if(form){
           form.resetForm();
         }
         this.addActor.slots=[];

@@ -6,7 +6,7 @@ import { navigation } from '../../navigation/navigation'
 import {  Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
-import {  HealthProvider, AddProvider, Qualification, Slots } from './actor.model';
+import {  HealthProvider, AddProvider, Qualification, Slots, Appointment } from './actor.model';
 import { retry } from 'rxjs/operators';
 import { identifierModuleUrl } from '@angular/compiler';
 
@@ -68,6 +68,7 @@ export class ActorService implements OnInit,OnDestroy {
    err=>{
      this.errHandler(err);
    })
+   this.subscribeSuccess.next(false);
  }
 
 
@@ -97,6 +98,7 @@ export class ActorService implements OnInit,OnDestroy {
     err=>{
      this.errHandler(err);
      })
+	 this.subscribeSuccess.next(false);
   }
   // Adding Qualifications Master
   // Getting Qualifications 
@@ -123,6 +125,7 @@ export class ActorService implements OnInit,OnDestroy {
     },err=>{
       this.errHandler(err);
     })
+	this.subscribeSuccess.next(false);
   }
   
   // updating Qualifications
@@ -148,6 +151,7 @@ export class ActorService implements OnInit,OnDestroy {
       //   alert('An Error Has Occured...! \n'+JSON.stringify(err.statusText))
       // }
     })
+	this.subscribeSuccess.next(false);
   }
   getSlots(){
     return this.http.get<Slots[]>(environment.url+'getSlotmaster');
@@ -168,6 +172,7 @@ export class ActorService implements OnInit,OnDestroy {
     err=>{
       this.errHandler(err);
     })
+	this.subscribeSuccess.next(false);
   }
 
   // adding and getting slots 
@@ -197,6 +202,13 @@ export class ActorService implements OnInit,OnDestroy {
     return this.http.put<AddProvider>(environment.url+'updateactor/'+id,post)
   }
   // Updating Provider
+
+  // Get all Appointments
+  getAllAppointments(){
+    return this.http.get<Appointment[]>(environment.url+'getappointment')
+  }
+  // Get all Appointments
+
 
   // Search in Providers
   searchAmongProviders(post){
@@ -263,6 +275,8 @@ export class ActorService implements OnInit,OnDestroy {
       this.router.navigateByUrl('/actor/add/'+role)
     }
   }
+  this.subscribeSuccess.next(false);
+  this.masterSubscribeSuccess.next(false);
 }
 
 

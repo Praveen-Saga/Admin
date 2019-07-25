@@ -43,6 +43,7 @@ export class AddQualificationComponent implements OnInit {
     this.actorServ.getAllProviders().subscribe(res=>{
       this.isLoading=false;
       console.log(res);
+      this.providers=[];
       res.forEach(el=>{
         let myValue=el._id;
         let myTitle=el.providerName.toLowerCase().replace("-"," ")
@@ -67,8 +68,11 @@ export class AddQualificationComponent implements OnInit {
 
 
   getQualificationsToTable(){
+    this.qualificationArr=[];
     this.actorServ.getAllQualifications().subscribe(res=>{
       console.log(res);
+      this.getProvidersToTable();
+
         this.qualificationArr=[...res];
       res.forEach(el=>{
         console.log(el)

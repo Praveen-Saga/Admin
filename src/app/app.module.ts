@@ -19,6 +19,7 @@ import { SampleModule } from 'app/main/sample/sample.module';
 import { LoginModule } from './main/login/login.module';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
+import { AppointmentsComponent } from './main/actor/appointments/appointments.component';
 
 
 // const appRoutes: Routes = [
@@ -32,6 +33,7 @@ import { CommonModule } from '@angular/common';
 @NgModule({
     declarations: [
         AppComponent,
+        // AppointmentsComponent,
     ],
     imports     : [
         BrowserModule,
