@@ -202,7 +202,7 @@ export class AddActorComponent implements OnInit,OnDestroy {
 // ImagePicker and file preview
 
 // Availability and Slots
-availability(){
+availability(event){
   console.log(this.availableDays,this.availableSlots);
   // this.availableSlots.unshift(this.availableDays)
   if(this.availableDays && this.availableSlots && this.availableDays!==null && this.availableSlots!==[]){

@@ -1,6 +1,7 @@
 import { FuseNavigation } from '@fuse/types';
 import { OnInit } from '@angular/core';
 import { ActorService } from 'app/main/actor/actor.service';
+import { count } from 'rxjs/operators';
 
 export const navigation: FuseNavigation[] = [
     {
@@ -51,24 +52,31 @@ export const navigation: FuseNavigation[] = [
                         type     : 'item',
                         icon     : 'school',
                         url      : '/actor/add-qualification',
+                        
                        
                     },
                   
                 ]
             },
             {
+                id       : 'users',
+                title    : 'Users',
+                type     : 'item',
+                icon     : 'group',
+                url      : '/actor/users',
+                badge    :{
+                count    : 0,
+                title:'',
+                }
+               
+            },
+            {
                 id       : 'appointments',
                 title    : 'Appointments',
-                // translate: 'NAV.SAMPLE.TITLE',
                 type     : 'item',
                 icon     : 'group',
                 url      : '/actor/appointments',
-                // badge    : {
-                //     title    : '25',
-                //     translate: 'NAV.SAMPLE.BADGE',
-                //     bg       : '#F44336',
-                //     fg       : '#FFFFFF'
-                // }
+               
             },
           
         ],

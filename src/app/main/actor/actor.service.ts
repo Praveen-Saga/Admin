@@ -6,7 +6,7 @@ import { navigation } from '../../navigation/navigation'
 import {  Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
-import {  HealthProvider, AddProvider, Qualification, Slots, Appointment } from './actor.model';
+import {  HealthProvider, AddProvider, Qualification, Slots, Appointment, Users } from './actor.model';
 import { retry } from 'rxjs/operators';
 import { identifierModuleUrl } from '@angular/compiler';
 
@@ -20,6 +20,7 @@ export class ActorService implements OnInit,OnDestroy {
   rolesArr:string[]=['doctor','nurse','medical-store','transport'];
   dupCheck={};
   subscribeSuccess= new Subject<boolean>()
+  getterSuccess= new Subject<boolean>()
   masterSubscribeSuccess= new Subject<boolean>()
   constructor(
     private fuseNavServ:FuseNavigationService,
@@ -29,10 +30,14 @@ export class ActorService implements OnInit,OnDestroy {
   }
 
   ngOnInit(){
+    this.getterSuccess.next(false);
     this.subscribeSuccess.next(false);
     this.masterSubscribeSuccess.next(false)
   }
 
+  getGetterSuccess(){
+    return this.getterSuccess.asObservable();
+  }
 
   getSubscribeSuccess(){
     return this.subscribeSuccess.asObservable();
@@ -209,6 +214,13 @@ export class ActorService implements OnInit,OnDestroy {
   }
   // Get all Appointments
 
+  // Get All Patients
+
+  getAllUsers(){
+    return this. http.get<Users[]>(environment.url+'getAllpatients');
+  }
+
+  // Get All Patients
 
   // Search in Providers
   searchAmongProviders(post){

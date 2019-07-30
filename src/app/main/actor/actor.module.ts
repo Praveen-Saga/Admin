@@ -18,6 +18,7 @@ import { EditDialogComponent } from './view-actor/edit-dialog/edit-dialog.compon
 import { DeleteDialogComponent } from './view-actor/delete-dialog/delete-dialog.component';
 import { AddQualificationComponent } from './add-qualification/add-qualification.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
+import { UsersComponent } from './users/users.component';
 
 
 const Material=[
@@ -54,6 +55,10 @@ const routes = [
                 component:AppointmentsComponent
             },
             {
+                path:'users',
+                component:UsersComponent
+            },
+            {
 
                 path : 'add/:newactor',
                 component: AddActorComponent
@@ -76,7 +81,8 @@ const routes = [
     EditDialogComponent, 
     DeleteDialogComponent, 
     AddQualificationComponent,
-    AppointmentsComponent
+    AppointmentsComponent,
+    UsersComponent
 ],
     imports     : [
         CommonModule,

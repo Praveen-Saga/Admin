@@ -207,16 +207,18 @@ export class AppComponent implements OnInit, OnDestroy
                   ]
               },
               ))
-
+              this.actorServ.getterSuccess.next(true);
               },err=>{
                   console.log(err)
               })
 
             })
+            this.actorServ.getterSuccess.next(false);
           },
           err=>{
               console.log(err);
           })
+        
     }
  
 

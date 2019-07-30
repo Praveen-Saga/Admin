@@ -85,3 +85,18 @@ export interface PeriodicElement {
     }]
   }
 
+  
+export interface Users{
+  _id?:string;
+  name:string;
+  age:number;
+  gender:string;
+  address:string;
+  email:string;
+  phone:number;
+  password:string;
+  confirmpassword:string;
+  token?:string;
+  status?:string;
+}
+

@@ -9,7 +9,7 @@ import { MatTableDataSource } from '@angular/material';
   styleUrls: ['./appointments.component.scss']
 })
 export class AppointmentsComponent implements OnInit {
-  displayedColumns: string[] = [ 'position','provider','user','date','day','time'];
+  displayedColumns: string[] = [ 'position','provider','user','date','status','day','time'];
   dataSource;
   isLoading:boolean=false;
   constructor(

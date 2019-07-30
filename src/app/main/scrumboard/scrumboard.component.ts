@@ -24,6 +24,7 @@ export class ScrumboardComponent implements OnInit, OnDestroy
     projectBoards: FuseNavigation[];
     userBoards: FuseNavigation[];
     alertBoards: FuseNavigation[];
+    users: FuseNavigation[];
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -59,32 +60,22 @@ export class ScrumboardComponent implements OnInit, OnDestroy
         //         this.boards = boards;
         //     });
        
-        this.projectBoards=navigation[0].children[1].children;
-        this.userBoards=navigation[1].children;
-        this.alertBoards=navigation[2].children;
+        this.projectBoards=[...navigation[0].children[1].children];
+        this.userBoards=[...navigation[1].children];
+        this.alertBoards=[...navigation[2].children];
         // this.projectBoards.shift();
-
+        this.getAllUsers();
+        this.getAllProviders();
+        this.actorServ.getGetterSuccess().subscribe(res=>{
+            console.log(res);
+            if(res){
+                this.getAllProviders();
+            }
+        })
         // Getting Providers and Providers count to Dashboard
-            this.actorServ.getAllProviders().subscribe(res=>{
-                res.forEach(provider=>{
-                        // console.log(provider.providerName,count)
-                        this.userBoards.forEach(board=>{
-                            if(provider.providerName===board.id){
-                    this.actorServ.providerWiseCount(provider._id).subscribe(count=>{
-                            console.log(board)
-                            board.badge.count=count;
-                        },
-                        err=>{
-                            this.actorServ.errHandler(err);
-                        })
-                    }
-                })
-                })
-            },
-            err=>{
-                this.actorServ.errHandler(err)
-            })
+          
         // Getting Providers and Providers count to Dashboard
+       
            
         // Removing Dashboard Page from the Project Boards
            this.projectBoards= this.projectBoards.filter(el=>{
@@ -95,6 +86,42 @@ export class ScrumboardComponent implements OnInit, OnDestroy
 
 
     }
+
+    getAllUsers(){
+        this.actorServ.getAllUsers().subscribe(res=>{
+          console.log(res);
+          navigation[0].children[2].badge.count=res.length;
+          console.log(navigation[0].children[2]);
+          this.users=[{...navigation[0].children[2]}];
+        },
+        err=>{
+          this.actorServ.errHandler(err);
+        })
+      }
+
+      getAllProviders(){
+          console.log('Getting Started...')
+        this.actorServ.getAllProviders().subscribe(res=>{
+            res.forEach(provider=>{
+                    // console.log(provider.providerName,count)
+                    this.userBoards.forEach(board=>{
+                        if(provider.providerName===board.id){
+                this.actorServ.providerWiseCount(provider._id).subscribe(count=>{
+                        console.log(board)
+                        board.badge.count=count;
+                    },
+                    err=>{
+                        this.actorServ.errHandler(err);
+                    })
+                }
+            })
+            })
+            // console.log(navigation[0].children[2]);
+        },
+        err=>{
+            this.actorServ.errHandler(err)
+        })
+      }
 
     /**
      * On destroy

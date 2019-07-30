@@ -11,8 +11,17 @@
          [@animateStagger]="{value:'50'}">
 
         <!-- BOARD -->
-        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 1 auto" style="width:100%" class="h1 mb-12">Health Providers Details</div>
+        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 1 auto" style="width:100%" class="h1 mb-12">
+            Users and Providers
+        </div>
 
+        <div class="board-list-item" *ngFor="let user of users"
+        [routerLink]="user.url"
+        fxLayout="column" fxLayoutAlign="center center"
+        [@animate]="{value:'*',params:{y:'100%'}}">
+       <mat-label style="font-size: 3.5em">{{user.badge.count}}</mat-label>
+       <div class="board-name">{{user.title}}</div>
+        </div>
 
         <!-- <div  fxLayoutAlign="center center" fxFlex="1 0 auto"> -->
         <div class="board-list-item" *ngFor="let board of userBoards"
