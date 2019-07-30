@@ -17,9 +17,14 @@
     </div>
 
     <div class="mat-card form-errors-model p-24 mat-elevation-z4" style="margin-top:10px;">
-            <div class="h2 mb-24">List of Health Providers Available</div>
+            <div class="h2 mb-24">
+                    <mat-label class="h2">List of Providers</mat-label>
+                    <button mat-raised-button color="primary" 
+                      [printStyle]="{td: {'text-align':'center','padding':'5px'}}"
+                     printSectionId="print-section" style='margin-left:75%;' ngxPrint>print</button>
+                  </div>
             <!-- <pre> -->
-                <div class="mat-elevation-z8" style=" width: 70%; margin:auto;" *ngIf='!isLoading'>
+                <div class="mat-elevation-z8" style=" width: 70%; margin:auto;" *ngIf='!isLoading' id="print-section">
                         <table mat-table [dataSource]="dataSource"  class="mat-elevation-z8" style="width: 100%">
     
                                 <!-- Position Column -->

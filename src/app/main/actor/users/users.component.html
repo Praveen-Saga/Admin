@@ -1,8 +1,13 @@
-<div class="page-layout blank" fusePerfectScrollbar>
+<div class="page-layout blank"  fusePerfectScrollbar>
     <div class="mat-card form-errors-model p-24 mat-elevation-z4" style="margin-top:10px;">
-    <div class="h2 mb-24">List of Appointments</div>
-        <div class="mat-elevation-z8" style=" width: 70%; margin:auto;" *ngIf='!isLoading'>
-                <table mat-table [dataSource]="dataSource"  class="mat-elevation-z8" style="width: 100%">
+    <div class="h2 mb-24">
+      <mat-label class="h2">List of Users</mat-label>
+      <button mat-raised-button color="primary" 
+        [printStyle]="{td: {'text-align':'center','padding':'5px'}}"
+       printSectionId="print-section" style='margin-left:80%;' ngxPrint>print</button>
+    </div>
+        <div class="mat-elevation-z8" style=" width: 70%; margin:auto;" *ngIf='!isLoading' id="print-section">
+                <table mat-table [dataSource]="dataSource"   class="mat-elevation-z8" style="width: 100%">
 
                         <ng-container matColumnDef="position">
                           <th mat-header-cell *matHeaderCellDef> No. </th>
@@ -27,7 +32,10 @@
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                       </table>
+
+             
         </div>
+      
         <div class='px-24' fxLayoutAlign="center center"  *ngIf='isLoading' style="margin:auto;text-align: center;" >
           <mat-spinner  class="p-24" style="margin: auto;" value=100 diameter=50></mat-spinner>
   </div>

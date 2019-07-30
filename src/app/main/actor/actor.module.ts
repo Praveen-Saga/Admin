@@ -19,7 +19,7 @@ import { DeleteDialogComponent } from './view-actor/delete-dialog/delete-dialog.
 import { AddQualificationComponent } from './add-qualification/add-qualification.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { UsersComponent } from './users/users.component';
-
+import {NgxPrintModule} from 'ngx-print'; 
 
 const Material=[
     MatFormFieldModule,
@@ -88,6 +88,7 @@ const routes = [
         CommonModule,
         RouterModule.forChild(routes),
         NgxMaterialTimepickerModule,
+        NgxPrintModule,
 
         FormsModule,
         Material,
