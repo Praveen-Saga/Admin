@@ -3,7 +3,9 @@
     <div class="h2 mb-24">
       <mat-label class="h2">List of Users</mat-label>
       <button mat-raised-button color="primary" 
-        [printStyle]="{td: {'text-align':'center','padding':'5px'}}"
+        printTitle='Users'
+        [printStyle]="{td: {'text-align':'center','padding':'5px'}, '.icon':{'visibility':'hidden'},
+        button:{'background-color':'white','color':'black','border':'none'}}"
        printSectionId="print-section" style='margin-left:80%;' ngxPrint>print</button>
     </div>
         <div class="mat-elevation-z8" style=" width: 70%; margin:auto;" *ngIf='!isLoading' id="print-section">

@@ -74,7 +74,7 @@ export const navigation: FuseNavigation[] = [
                 id       : 'appointments',
                 title    : 'Appointments',
                 type     : 'item',
-                icon     : 'group',
+                icon     : 'format_list_bulleted',
                 url      : '/actor/appointments',
                
             },

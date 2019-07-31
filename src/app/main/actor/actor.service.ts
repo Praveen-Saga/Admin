@@ -7,7 +7,7 @@ import {  Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import {  HealthProvider, AddProvider, Qualification, Slots, Appointment, Users } from './actor.model';
-import { retry } from 'rxjs/operators';
+import { retry, take } from 'rxjs/operators';
 import { identifierModuleUrl } from '@angular/compiler';
 
 

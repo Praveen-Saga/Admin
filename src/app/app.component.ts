@@ -172,7 +172,7 @@ export class AppComponent implements OnInit, OnDestroy
         this.actorServ.getAllProviders().pipe(retryWhen(_ => {
             return interval(5000)
           })).subscribe(res=>{
-            console.log(res);
+            console.log(res,'App component');
             navigation[1].children.length=0;
             res.forEach(el=>{
                 let myUrl=el.providerName.toLowerCase();
@@ -181,7 +181,7 @@ export class AppComponent implements OnInit, OnDestroy
               .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
               .join(' ');
               this.actorServ.providerWiseCount(el._id).subscribe(res=>{
-                  console.log(el.providerName,res);
+                  console.log(el.providerName,res,'app component');
                 this._fuseNavigationService.updateNavigationItem('health-providers',
                 navigation[1].children.push({
                   id:el.providerName,
@@ -206,18 +206,22 @@ export class AppComponent implements OnInit, OnDestroy
                       },
                   ]
               },
-              ))
+              )
+              )
+              console.log(navigation[1].children);
               this.actorServ.getterSuccess.next(true);
+
+
               },err=>{
                   console.log(err)
               })
 
             })
-            this.actorServ.getterSuccess.next(false);
           },
           err=>{
               console.log(err);
           })
+          this.actorServ.getterSuccess.next(false);
         
     }
  

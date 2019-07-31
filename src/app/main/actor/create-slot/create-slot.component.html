@@ -28,7 +28,9 @@
         <div class="h2 mb-24">
                 <mat-label class="h2">List of Slots</mat-label>
                 <button mat-raised-button color="primary" 
-                  [printStyle]="{td: {'text-align':'center','padding':'5px'}}"
+                  printTitle='Slots'
+                  [printStyle]="{td: {'text-align':'center','padding':'5px'}, '.icon':{'visibility':'hidden'},
+                  button:{'background-color':'white','color':'black','border':'none'}}"
                  printSectionId="print-section" style='margin-left:80%;' ngxPrint>print</button>
               </div>
         <!-- <pre> -->
@@ -79,7 +81,7 @@
                             <ng-container matColumnDef="edit" >
                                     <th mat-header-cell *matHeaderCellDef ></th>
                                     <td mat-cell *matCellDef="let element" >
-                                    <button mat-raised-button (click)="edit(element)" class='blue-900' style="display:inline">
+                                    <button mat-raised-button (click)="edit(element)" class='blue-900 icon' style="display:inline">
                                         <mat-icon aria-label="Edit" >edit</mat-icon>
                                         <mat-label>Edit</mat-label>
                                     </button>

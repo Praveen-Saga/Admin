@@ -69,7 +69,8 @@ export class ScrumboardComponent implements OnInit, OnDestroy
         this.actorServ.getGetterSuccess().subscribe(res=>{
             console.log(res);
             if(res){
-                this.getAllProviders();
+                // this.getAllProviders();
+                 this.userBoards=[...navigation[1].children];
             }
         })
         // Getting Providers and Providers count to Dashboard
@@ -92,11 +93,11 @@ export class ScrumboardComponent implements OnInit, OnDestroy
           console.log(res);
           navigation[0].children[2].badge.count=res.length;
           console.log(navigation[0].children[2]);
-          this.users=[{...navigation[0].children[2]}];
         },
         err=>{
           this.actorServ.errHandler(err);
         })
+        this.users=[{...navigation[0].children[2]}];
       }
 
       getAllProviders(){
